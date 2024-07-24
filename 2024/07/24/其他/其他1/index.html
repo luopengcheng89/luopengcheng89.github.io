@@ -492,6 +492,61 @@
   
 </div>
 
+<!----添加音乐插件---->>
+<div id="musicMouseDrag" style="position:fixed; z-index: 9999; bottom: 0; right: 0;">
+  <div id="musicDragArea" style="position: absolute; top: 0; left: 0; width: 100%;height: 10px;cursor: move; z-index: 10;"></div>
+  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=2165736345&auto=1&height=66"></iframe>
+</div>
+
+<!--以下代码是为了支持随时拖动音乐控件的位置，如没有需求，可去掉下面代码-->
+<script>
+  var $DOC = $(document)
+  $('#musicMouseDrag').on('mousedown', function (e) {
+    // 阻止文本选中
+    $DOC.bind("selectstart", function () {
+      return false;
+    });
+    $('#musicDragArea').css('height', '100%');
+    var $moveTarget = $('#musicMouseDrag');
+    $moveTarget.css('border', '1px dashed grey')
+    var div_x = e.pageX - $moveTarget.offset().left;
+    var div_y = e.pageY - $moveTarget.offset().top;
+    $DOC.on('mousemove', function (e) {
+      var targetX = e.pageX - div_x;
+      var targetY = e.pageY - div_y;
+      targetX = targetX < 0 ? 0 : (targetX + $moveTarget.outerWidth() >= window.innerWidth) ? window.innerWidth - $moveTarget.outerWidth() : targetX;
+      targetY = targetY < 0 ? 0 : (targetY + $moveTarget.outerHeight() >= window.innerHeight) ? window.innerHeight - $moveTarget.outerHeight() : targetY;
+      $moveTarget.css({'left': targetX + 'px', 'top': targetY + 'px', 'bottom': 'inherit', 'right': 'inherit'})
+    }).on('mouseup', function () {
+      $DOC.unbind("selectstart");
+      $DOC.off('mousemove')
+      $DOC.off('mouseup')
+      $moveTarget.css('border', 'none')
+      $('#musicDragArea').css('height', '10px');
+    })
+  })
+</script>
+
+
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/01/2023 10:00:00"); //此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒.";
+    }
+setInterval("createtime()",250);
+</script>
   </footer>
 
   <!-- Scripts -->
