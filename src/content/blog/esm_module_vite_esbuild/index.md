@@ -1,5 +1,5 @@
 ---
-title: CommonJS 与 ESM：现代 JavaScript 模块化之路与 Vite 的魔法
+title: CommonJS 与 ESM 模块异同及 vite 的处理
 description: '本文将深入探讨 CommonJS 和 ESM 的异同，分析它们各自的特点和适用场景，并揭示 Vite 如何巧妙地处理 CommonJS 模块，让开发者能够无缝使用庞大的 npm 生态系统。'
 publishDate: 2024-08-26 16:58:24
 tags: ['js']
@@ -155,7 +155,7 @@ Vite 会：
 3. 将转换后的模块存储在 `node_modules/.vite/deps/lodash.js`
 4. 重写你的导入语句指向转换后的模块
 
-## 三、esbuild 的转换魔法
+## 三、esbuild 的转换过程
 
 ### 3.1 转换策略
 
