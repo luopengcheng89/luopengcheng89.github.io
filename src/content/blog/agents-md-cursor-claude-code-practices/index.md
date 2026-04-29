@@ -3,6 +3,10 @@ title: AGENTS.md 用法：Cursor 与 Claude Code 最佳实践
 description: 以 lynx-stack 项目为例，介绍 AGENTS.md 的定位、写法、分层策略，以及在 Cursor、Claude Code 等 AI 编程工具中的结合方式。
 publishDate: 2026-04-29 02:35:00
 tags: ['AI Agent', 'Cursor', 'Claude Code', 'AGENTS.md', '工程实践']
+heroImage:
+  src: './thumbnail.svg'
+  alt: 'AI 编程代理任务清单插画'
+  color: '#4952BE'
 language: 'zh'
 draft: false
 comment: true
