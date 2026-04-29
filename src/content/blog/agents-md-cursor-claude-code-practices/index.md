@@ -5,7 +5,7 @@ publishDate: 2026-04-29 02:35:00
 tags: ['AI Agent', 'Cursor', 'Claude Code', 'AGENTS.md', '工程实践']
 heroImage:
   src: './thumbnail.svg'
-  alt: 'AI 编程代理任务清单插画'
+  alt: 'thumbnail.svg'
   color: '#4952BE'
 language: 'zh'
 draft: false
