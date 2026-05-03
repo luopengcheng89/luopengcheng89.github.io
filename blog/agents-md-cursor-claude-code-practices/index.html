@@ -1,0 +1,558 @@
+<!DOCTYPE html><html lang="en-US" class="astro-37fxchfa" style="--highlightColor: #4952BE;"> <head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport"><meta content="IE=edge" http-equiv="X-UA-Compatible"><title>AGENTS.md 用法：Cursor 与 Claude Code 最佳实践 • JohnieXu&#39;s Blog</title><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png"><link rel="manifest" href="/favicon/site.webmanifest"><link rel="preload" href="/fonts/Satoshi-Variable.ttf" as="font" type="font/ttf" crossorigin><link rel="preload" href="/fonts/Satoshi-VariableItalic.ttf" as="font" type="font/ttf" crossorigin><link rel="canonical" href="https://luopengcheng89.github.io/blog/agents-md-cursor-claude-code-practices"><meta content="AGENTS.md 用法：Cursor 与 Claude Code 最佳实践 • JohnieXu's Blog" name="title"><meta content="以 lynx-stack 项目为例，介绍 AGENTS.md 的定位、写法、分层策略，以及在 Cursor、Claude Code 等 AI 编程工具中的结合方式。" name="description"><meta content="JohnieXu" name="author"><meta content="" name="theme-color"><meta content="article" property="og:type"><meta content="AGENTS.md 用法：Cursor 与 Claude Code 最佳实践" property="og:title"><meta content="以 lynx-stack 项目为例，介绍 AGENTS.md 的定位、写法、分层策略，以及在 Cursor、Claude Code 等 AI 编程工具中的结合方式。" property="og:description"><meta content="https://luopengcheng89.github.io/blog/agents-md-cursor-claude-code-practices" property="og:url"><meta content="JohnieXu's Blog" property="og:site_name"><meta content="en_US" property="og:locale"><meta content="https://luopengcheng89.github.io/_astro/thumbnail.BSS8RXC9.png" property="og:image"><meta content="1200" property="og:image:width"><meta content="630" property="og:image:height"><meta content="JohnieXu" property="article:author"><meta content="2026-04-29T02:35:00.000Z" property="article:published_time"><meta content="summary_large_image" property="twitter:card"><meta content="https://luopengcheng89.github.io/blog/agents-md-cursor-claude-code-practices" property="twitter:url"><meta content="AGENTS.md 用法：Cursor 与 Claude Code 最佳实践" property="twitter:title"><meta content="以 lynx-stack 项目为例，介绍 AGENTS.md 的定位、写法、分层策略，以及在 Cursor、Claude Code 等 AI 编程工具中的结合方式。" property="twitter:description"><meta content="https://luopengcheng89.github.io/_astro/thumbnail.BSS8RXC9.png" property="twitter:image"><link href="/sitemap-index.xml" rel="sitemap"><link rel="alternate" type="application/rss+xml" title="JohnieXu's Blog" href="https://luopengcheng89.github.io/rss.xml"><meta content="Astro v5.18.1" name="generator"><link rel="stylesheet" href="/styles/global.css"><!-- <ClientRouter /> --><!-- <script is:inline>
+  const style = document.createElement('style')
+  style.textContent = `* { transition: none !important; }`
+  document.addEventListener('astro:after-swap', () => {
+    document.head.appendChild(style)
+    setTimeout(() => {
+      style.remove()
+    }, 100)
+  })
+</script> --><script>
+  function simpleSetTheme() {
+    let theme = localStorage.getItem('theme')
+    // If undefined or 'system', get from system
+    if (!theme || theme === 'system') {
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    }
+    document.documentElement.classList.toggle('dark', theme === 'dark')
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute('content', theme === 'dark' ? '#0B0B10' : '#FCFCFD')
+  }
+  simpleSetTheme()
+  document.addEventListener('astro:page-load', () => simpleSetTheme())
+</script><script type="module" src="/_astro/ThemeProvider.astro_astro_type_script_index_0_lang.suZL6u-L.js"></script><link rel="stylesheet" href="/_astro/index.CtUmLu19.css">
+<link rel="stylesheet" href="/_astro/_id_.HM2DiD67.css">
+<link rel="stylesheet" href="/_astro/_id_.Dzwn4XdV.css">
+<style>@media(min-width:769px){#sidebar-shade:where(.astro-scuu7fyy){display:none!important}}@media(max-width:769px){aside:where(.astro-scuu7fyy).show{display:block!important;opacity:1}@keyframes fade-in-side{0%{transform:translate(50%);opacity:0}to{transform:translate(0);opacity:1}}@keyframes fade-in{0%{opacity:0}to{opacity:1}}aside:where(.astro-scuu7fyy){animation:.3s fade-in-side!important;animation-fill-mode:forwards;right:0;top:0!important;height:100vh!important;min-width:40vw!important;max-width:75vw!important;border-top-right-radius:0!important;border-bottom-right-radius:0!important;padding-top:1.5rem!important;padding-bottom:1.5rem!important}#sidebar-shade:where(.astro-scuu7fyy){animation:.3s fade-in}}@media(max-width:640px){aside:where(.astro-scuu7fyy){min-width:55vw!important}}
+footer:where(.astro-nugfd6x2) a:where(.astro-nugfd6x2){color:hsl(var(--foreground) / var(--un-text-opacity, 1));text-decoration:underline;font-weight:500}header-component:where(.astro-m7t5coe6){transition:padding .3s,transform .3s,margin-inline .3s,border .15s,background-color .15s;&.not-top{--un-border-opacity: 1;border-color:hsl(var(--border) / var(--un-border-opacity));--un-bg-opacity: 1;background-color:hsl(var(--background) / var(--un-bg-opacity));padding-left:.375rem;padding-right:.375rem;box-shadow:#fff 0 0,#18181b14 0 0 0 1px,#27272a14 0 10px 15px -3px,#27272a14 0 4px 6px -4px}&[data-show=false]:not(.expanded){transform:translateY(-5rem)}}@media(min-width:800px){header-component:where(.astro-m7t5coe6).not-top{margin-inline:8%}}.dark header-component:where(.astro-m7t5coe6).not-top{background-color:hsl(var(--muted) / var(--un-bg-opacity))}@media(max-width:640px){#headerExpandContent:where(.astro-m7t5coe6){grid-template-rows:0fr;transition:opacity .3s,padding .3s,border-color .15s,grid-template-rows .3s}.expanded:where(.astro-m7t5coe6) #headerExpandContent:where(.astro-m7t5coe6){grid-template-rows:1fr}.expanded:where(.astro-m7t5coe6).not-top #headerExpandContent:where(.astro-m7t5coe6){box-shadow:#fff 0 0,#18181b14 0 0 0 1px,#27272a14 0 10px 15px -3px,#27272a14 0 4px 6px -4px}header-component:where(.astro-m7t5coe6) #headerExpandContent:where(.astro-m7t5coe6):after{box-sizing:content-box;content:"";position:absolute;inset-inline:calc(-1rem - 1px);bottom:0;top:-5rem;z-index:-1;transition:.3s;visibility:hidden;opacity:0;border-bottom:1px solid transparent}header-component:where(.astro-m7t5coe6):not(.not-top) #headerExpandContent:where(.astro-m7t5coe6):after{visibility:visible;bottom:-1rem;opacity:1;background-color:hsl(var(--muted) / var(--un-bg-opacity, 1));border-bottom-color:hsl(var(--border) / var(--un-border-opacity, 1))}}#toggleDarkMode:where(.astro-m7t5coe6){&[data-theme=dark]{.system:where(.astro-m7t5coe6){display:none}.dark:where(.astro-m7t5coe6){display:block}}&[data-theme=light]{.system:where(.astro-m7t5coe6){display:none}.light{display:block}}}@font-face{font-family:Satoshi;src:url(/fonts/Satoshi-Variable.ttf);font-style:normal;font-display:swap}@font-face{font-family:Satoshi;src:url(/fonts/Satoshi-VariableItalic.ttf);font-style:italic;font-display:swap}html{font-family:Satoshi,sans-serif}:root{--background: 210 33% 99%;--foreground: 240 10% 3.9%;--card: 0 0% 100%;--card-foreground: 240 10% 3.9%;--popover: 0 0% 100%;--popover-foreground: 240 10% 3.9%;--primary: 200 29% 45%;--primary-foreground: 0 0% 92.5%;--secondary: 240 4.8% 95.9%;--secondary-foreground: 240 5.9% 10%;--muted: 240 4.8% 95%;--muted-foreground: 240 3.8% 28.1%;--accent: 240 4.8% 95.9%;--accent-foreground: 240 5.9% 10%;--destructive: 0 72.22% 50.59%;--destructive-foreground: 0 0% 98%;--border: 240 5.9% 88%;--input: 240 5.9% 90%;--ring: 240 5.9% 10%;--radius: .5rem}.dark{--background: 240 20.54% 5.2%;--foreground: 0 0% 98%;--card: 240 10% 3.9%;--card-foreground: 0 0% 98%;--popover: 240 10% 3.9%;--popover-foreground: 0 0% 98%;--primary: 195 95% 85%;--primary-foreground: 240 3.7% 15.9%;--secondary: 240 3.7% 15.9%;--secondary-foreground: 0 0% 98%;--muted: 240 5.9% 12%;--muted-foreground: 240 5% 74.9%;--accent: 240 3.7% 15.9%;--accent-foreground: 0 0% 98%;--destructive: 0 62.8% 30.6%;--destructive-foreground: 0 0% 98%;--border: 240 3.7% 19.9%;--input: 240 3.7% 15.9%;--ring: 240 4.9% 83.9%}:root{--un-default-border-color: hsl(var(--border) / 1)}html.dark{color-scheme:dark}a{transition:color .2s ease;&:hover{color:hsl(var(--primary) / var(--un-text-opacity, 1))}}.highlight{color:var(--highlightColor, hsl(var(--primary) / var(--un-text-opacity)))!important}.highlight-bg{background-color:var( --highlightColor, hsl(var(--primary) / var(--un-text-opacity)) )!important}
+starlight-tabs:where(.astro-jj7l43yw){display:block}.tablist-wrapper:where(.astro-jj7l43yw){overflow-x:auto}:where(.astro-jj7l43yw)[role=tablist]{display:flex;list-style:none;border-bottom:2px solid hsl(var(--border) / var(--un-border-opacity, 1));padding:0}.tab:where(.astro-jj7l43yw){margin-bottom:-2px}.tab:where(.astro-jj7l43yw)>:where(.astro-jj7l43yw)[role=tab]{display:flex;align-items:center;gap:.5rem;padding:.2rem 1.25rem;text-decoration:none;border-bottom:2px solid hsl(var(--border) / var(--un-border-opacity, 1));color:hsl(var(--foreground) / var(--un-text-opacity, 1));outline-offset:-.1875rem;overflow-wrap:initial;white-space:nowrap}.tab:where(.astro-jj7l43yw) :where(.astro-jj7l43yw)[role=tab][aria-selected=true]{color:hsl(var(--primary) / var(--un-text-opacity, 1));border-color:hsl(var(--primary) / var(--un-text-opacity, 1));font-weight:600}.tablist-wrapper:where(.astro-jj7l43yw)~[role=tabpanel]{margin-top:1rem}
+.aside:where(.astro-rvgg5kqy)>.aside-container:where(.astro-rvgg5kqy){--un-bg-opacity: .07;&.aside-tip{--primary: 234 60% 60%}&.aside-caution{--primary: 41 90% 50%}&.aside-danger{--primary: 339 90% 60%}.aside-content{>:first-child{margin-top:0}>:last-child{margin-bottom:0}}}
+svg:where(.astro-sa4wfxel){color:var(--sl-icon-color);font-size:var(--sl-icon-size, 1em);width:1.5em;height:1.5em}
+.expand-content:where(.astro-4p665nxd){grid-template-rows:0fr}.expanded:where(.astro-4p665nxd) .expand-content:where(.astro-4p665nxd){grid-template-rows:1fr}
+.sl-steps{--bullet-size: 1.75rem ;--bullet-margin: .375rem;list-style:none!important;counter-reset:steps-counter var(--sl-steps-start, 0);padding-inline-start:0!important}.sl-steps>li{counter-increment:steps-counter;position:relative;padding-inline-start:calc(var(--bullet-size) + 1rem);padding-bottom:1px;min-height:calc(var(--bullet-size) + var(--bullet-margin))}.sl-steps>li+li{margin-top:0}.sl-steps>li:before{content:counter(steps-counter);position:absolute;top:0;inset-inline-start:0;width:var(--bullet-size);height:var(--bullet-size);line-height:var(--bullet-size);font-size:.8125rem;font-weight:600;text-align:center;color:hsl(var(--foreground) / var(--un-text-opacity, 1));background-color:hsl(var(--card) / var(--un-bg-opacity, 1));border-radius:99rem;box-shadow:inset 0 0 0 1px hsl(var(--border) / var(--un-border-opacity, 1))}.sl-steps>li:after{--guide-width: 1px;content:"";position:absolute;top:calc(var(--bullet-size) + var(--bullet-margin));bottom:var(--bullet-margin);inset-inline-start:calc((var(--bullet-size) - var(--guide-width)) / 2);width:var(--guide-width);background-color:hsl(var(--border) / var(--un-border-opacity, 1))}.sl-steps>li>:first-child{--lh: 1.75em ;--shift-y: calc(.5 * (var(--bullet-size) - var(--lh)));margin-top:0;transform:translateY(var(--shift-y));margin-bottom:var(--shift-y);color:hsl(var(--foreground) / var(--un-text-opacity, 1))}.sl-steps>li>:first-child:where(h1,h2,h3,h4,h5,h6){--lh: 1.2em }
+</style><script type="module" src="/_astro/page.D1uwR3nK.js"></script></head> <body class="flex justify-center bg-background text-foreground astro-37fxchfa" class="astro-scuu7fyy" style="--highlightColor: #4952BE;"> <div id="highlight-gradient" class="pointer-events-none absolute start-0 top-0 z-0 h-screen w-full opacity-25 astro-37fxchfa" style="background-image:linear-gradient(#4952BE,transparent); --highlightColor: #4952BE;"></div> <div class="w-full max-w-[70rem] px-4 sm:px-7 lg:px-10 astro-37fxchfa" style="--highlightColor: #4952BE;"> <header-component class="group sticky top-4 z-50 max-md:z-30 mb-12 flex items-center justify-between rounded-xl border border-transparent max-sm:py-1 sm:rounded-2xl astro-m7t5coe6"> <a class="z-30 text-xl font-medium group-[.not-top]:ms-2 sm:group-[.not-top]:ms-3 astro-m7t5coe6" style="transition:margin-inline 0.3s" href="/" aria-label="Brand">JohnieXu&#39;s Blog</a> <div class="flex items-center gap-x-2 astro-m7t5coe6">  <div id="headerExpandContent" class="end-0 start-0 top-12 grid border border-transparent group-[.not-top]:rounded-xl group-[.expanded]:opacity-100 dark:group-[.expanded.not-top]:bg-muted max-sm:absolute max-sm:opacity-0 max-sm:group-[.not-top]:border-border max-sm:group-[.expanded.not-top]:bg-background max-sm:group-[.not-top]:px-4 max-sm:group-[.not-top]:py-2 sm:grid-rows-1 astro-m7t5coe6"> <div class="flex flex-col items-center justify-center overflow-hidden sm:flex-row astro-m7t5coe6"> <a href="/blog" class="w-full flex-none grow py-2 text-right font-medium transition-none hover:text-primary sm:w-fit sm:px-3 astro-m7t5coe6" aria-label="Nav menu item" data-astro-prefetch> Blog </a><a href="/projects" class="w-full flex-none grow py-2 text-right font-medium transition-none hover:text-primary sm:w-fit sm:px-3 astro-m7t5coe6" aria-label="Nav menu item" data-astro-prefetch> Projects </a><a href="/about" class="w-full flex-none grow py-2 text-right font-medium transition-none hover:text-primary sm:w-fit sm:px-3 astro-m7t5coe6" aria-label="Nav menu item" data-astro-prefetch> About </a> <div class="flex w-full grow flex-row justify-end gap-x-3 sm:w-fit sm:gap-x-5 astro-m7t5coe6"> <a class="px-1 py-2 transition-none sm:px-2 astro-m7t5coe6" href="/search" title="Search"> <span class="sr-only astro-m7t5coe6">Search</span> <svg aria-hidden="true" class="size-5 astro-m7t5coe6 astro-sa4wfxel" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><g fill="none" fill-rule="evenodd"><path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M5 10a5 5 0 1 1 10 0a5 5 0 0 1-10 0m5-7a7 7 0 1 0 4.192 12.606l5.1 5.101a1 1 0 0 0 1.415-1.414l-5.1-5.1A7 7 0 0 0 10 3"/></g></svg>  </a> </div> </div> </div>  <div class="z-30 flex gap-x-4 group-[.not-top]:gap-x-2 astro-m7t5coe6" style="transition:gap 0.3s"> <button id="toggleDarkMode" class="group/dark box-content size-5 rounded-md border p-1.5 transition-colors hover:bg-border sm:group-[.not-top]:rounded-xl astro-m7t5coe6"> <span class="sr-only astro-m7t5coe6">Dark Theme</span> <svg aria-hidden="true" class="system size-5 group-hover/dark:text-primary astro-m7t5coe6 astro-sa4wfxel" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><g fill="none" fill-rule="evenodd"><path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" fill-rule="nonzero" d="M19 3a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-4v1h1a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2h1v-1H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm-6 15h-2v1h2zm6-13H5v11h14z"/></g></svg>  <svg aria-hidden="true" class="light hidden size-5 group-hover/dark:text-primary astro-m7t5coe6 astro-sa4wfxel" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><g fill="none"><path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M12 19a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1m6.364-2.05l.707.707a1 1 0 0 1-1.414 1.414l-.707-.707a1 1 0 0 1 1.414-1.414m-12.728 0a1 1 0 0 1 1.497 1.32l-.083.094l-.707.707a1 1 0 0 1-1.497-1.32l.083-.094zM12 6a6 6 0 1 1 0 12a6 6 0 0 1 0-12m0 2a4 4 0 1 0 0 8a4 4 0 0 0 0-8m-8 3a1 1 0 0 1 .117 1.993L4 13H3a1 1 0 0 1-.117-1.993L3 11zm17 0a1 1 0 1 1 0 2h-1a1 1 0 1 1 0-2zM4.929 4.929a1 1 0 0 1 1.32-.083l.094.083l.707.707a1 1 0 0 1-1.32 1.497l-.094-.083l-.707-.707a1 1 0 0 1 0-1.414m14.142 0a1 1 0 0 1 0 1.414l-.707.707a1 1 0 1 1-1.414-1.414l.707-.707a1 1 0 0 1 1.414 0M12 2a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1"/></g></svg>  <svg aria-hidden="true" class="dark hidden size-5 group-hover/dark:text-primary astro-m7t5coe6 astro-sa4wfxel" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><g fill="none" fill-rule="evenodd"><path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M12.477 4.546a1.01 1.01 0 0 1 1.097-1.409A9 9 0 0 1 12 21c-4.434 0-8.118-3.206-8.863-7.426a1.01 1.01 0 0 1 1.409-1.097a6 6 0 0 0 7.931-7.931m2.404 1.072a8 8 0 0 1-9.263 9.263A7.002 7.002 0 0 0 19 12.001a7 7 0 0 0-4.12-6.383ZM5.565 7.716l.064.14a3.26 3.26 0 0 0 1.237 1.363l.1.059a.068.068 0 0 1 0 .118l-.1.058a3.26 3.26 0 0 0-1.237 1.364l-.064.14a.071.071 0 0 1-.13 0l-.064-.14a3.26 3.26 0 0 0-1.237-1.364l-.1-.058a.068.068 0 0 1 0-.118l.1-.059A3.26 3.26 0 0 0 5.37 7.855l.064-.14a.071.071 0 0 1 .13 0Zm2.832-4.859c.04-.09.166-.09.206 0l.102.222a5.2 5.2 0 0 0 1.97 2.172l.157.092a.108.108 0 0 1 0 .189l-.158.092a5.2 5.2 0 0 0-2.07 2.394a.113.113 0 0 1-.207 0l-.102-.222a5.2 5.2 0 0 0-1.97-2.172l-.158-.092a.108.108 0 0 1 0-.189l.158-.092a5.2 5.2 0 0 0 1.97-2.172z"/></g></svg>  </button> <button id="toggleMenu" class="rounded-md border p-1.5 transition-colors hover:bg-border sm:hidden sm:group-[.not-top]:rounded-xl astro-m7t5coe6"> <span class="sr-only astro-m7t5coe6">Menu</span> <svg aria-hidden="true" class="size-5 astro-m7t5coe6 astro-sa4wfxel" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><g fill="none"><path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M20 18a1 1 0 0 1 .117 1.993L20 20H4a1 1 0 0 1-.117-1.993L4 18zm0-7a1 1 0 1 1 0 2H4a1 1 0 1 1 0-2zm0-7a1 1 0 1 1 0 2H4a1 1 0 0 1 0-2z"/></g></svg>  </button> </div> </div> </header-component>  <script>
+  const toggleDarkModeElement = document.getElementById('toggleDarkMode')
+  if (toggleDarkModeElement) {
+    toggleDarkModeElement.dataset.theme = localStorage.getItem('theme') || 'system'
+  }
+</script> <script type="module" src="/_astro/Header.astro_astro_type_script_index_0_lang.CwScYy8Q.js"></script>   <a class="group inline-flex items-center gap-x-1 rounded-lg bg-muted border px-2 py-1 text-sm text-muted-foreground transition-all hover:bg-card no-underline astro-scuu7fyy" href="/blog" data-astro-prefetch="true" style="back">     <p class="my-0">Back</p>     </a> <main class="mt-6 items-start gap-x-10 md:flex astro-scuu7fyy">  <aside class="animate top-20 min-w-48 basis-60 overflow-y-scroll max-md:hidden z-40 fixed md:sticky md:order-2 lg:shrink-0 max-md:border max-md:px-4 max-md:py-3 max-md:bg-muted max-md:rounded-xl astro-scuu7fyy" style="height:calc(100vh - 7rem);" id="sidebar"> <toc-heading class=" astro-cmwrxxwc" slot="sidebar"> <h2 class="font-medium astro-cmwrxxwc">TABLE OF CONTENTS</h2> <ul class="mt-4 astro-cmwrxxwc"> <li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: AGENTS.md 用法：Cursor 与 Claude Code 最佳实践" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted" href="#agentsmd-用法cursor-与-claude-code-最佳实践">AGENTS.md 用法：Cursor 与 Claude Code 最佳实践</a> </div> <ul> <li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 1. AGENTS.md 解决的核心问题" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted" href="#1-agentsmd-解决的核心问题">1. AGENTS.md 解决的核心问题</a> </div>  </li><li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 2. 从 lynx-stack 看仓库级 AGENTS.md 应该写什么" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted" href="#2-从-lynx-stack-看仓库级-agentsmd-应该写什么">2. 从 lynx-stack 看仓库级 AGENTS.md 应该写什么</a> </div> <ul> <li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 2.1 先给仓库画像" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted ps-7" href="#21-先给仓库画像">2.1 先给仓库画像</a> </div>  </li><li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 2.2 把命令写成可执行路径，而不是命令清单" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted ps-7" href="#22-把命令写成可执行路径而不是命令清单">2.2 把命令写成可执行路径，而不是命令清单</a> </div>  </li><li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 2.3 记录常见失败与恢复方式" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted ps-7" href="#23-记录常见失败与恢复方式">2.3 记录常见失败与恢复方式</a> </div>  </li><li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 2.4 写清楚 CI 验证管线" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted ps-7" href="#24-写清楚-ci-验证管线">2.4 写清楚 CI 验证管线</a> </div>  </li> </ul> </li><li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 3. 子目录 AGENTS.md：把上下文放到离代码最近的地方" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted" href="#3-子目录-agentsmd把上下文放到离代码最近的地方">3. 子目录 AGENTS.md：把上下文放到离代码最近的地方</a> </div> <ul> <li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 3.1 a2ui：说明运行时数据流" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted ps-7" href="#31-a2ui说明运行时数据流">3.1 a2ui：说明运行时数据流</a> </div>  </li><li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 3.2 a2ui：说明如何扩展 catalog component" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted ps-7" href="#32-a2ui说明如何扩展-catalog-component">3.2 a2ui：说明如何扩展 catalog component</a> </div>  </li><li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 3.3 a2ui-playground：说明“看起来像 Web，其实渲染在 Lynx app”" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted ps-7" href="#33-a2ui-playground说明看起来像-web其实渲染在-lynx-app">3.3 a2ui-playground：说明“看起来像 Web，其实渲染在 Lynx app”</a> </div>  </li> </ul> </li><li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 4. Cursor 如何使用 AGENTS.md" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted" href="#4-cursor-如何使用-agentsmd">4. Cursor 如何使用 AGENTS.md</a> </div>  </li><li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 5. Claude Code 如何使用 AGENTS.md" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted" href="#5-claude-code-如何使用-agentsmd">5. Claude Code 如何使用 AGENTS.md</a> </div>  </li><li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 6. AGENTS.md 的分层最佳实践" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted" href="#6-agentsmd-的分层最佳实践">6. AGENTS.md 的分层最佳实践</a> </div> <ul> <li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 6.1 根目录：仓库级规则" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted ps-7" href="#61-根目录仓库级规则">6.1 根目录：仓库级规则</a> </div>  </li><li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 6.2 子目录：局部架构和操作步骤" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted ps-7" href="#62-子目录局部架构和操作步骤">6.2 子目录：局部架构和操作步骤</a> </div>  </li><li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 6.3 工具专属文件：只写工具差异" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted ps-7" href="#63-工具专属文件只写工具差异">6.3 工具专属文件：只写工具差异</a> </div>  </li> </ul> </li><li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 7. AGENTS.md 应该避免什么" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted" href="#7-agentsmd-应该避免什么">7. AGENTS.md 应该避免什么</a> </div>  </li><li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 8. 给 johniexu.github.io 的落地建议" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted" href="#8-给-johniexugithubio-的落地建议">8. 给 johniexu.github.io 的落地建议</a> </div> <ul> <li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 8.1 根目录 AGENTS.md" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted ps-7" href="#81-根目录-agentsmd">8.1 根目录 AGENTS.md</a> </div>  </li><li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 8.2 src/content/AGENTS.md" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted ps-7" href="#82-srccontentagentsmd">8.2 src/content/AGENTS.md</a> </div>  </li> </ul> </li><li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 9. 一份实用的 AGENTS.md 模板" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted" href="#9-一份实用的-agentsmd-模板">9. 一份实用的 AGENTS.md 模板</a> </div>  </li><li> <div class="relative"> <span class="absolute top-[5%] w-[2px] rounded transition-colors duration-300 [&.highlight-bg]:bg-primary [&.is-read]:bg-border"></span> <a aria-label="Scroll to section: 10. 总结" class="toc-item line-clamp-2 px-3 py-1 ms-2 text-foreground/75 transition-all hover:text-foreground [&#38;.highlight]:font-medium [&#38;.highlight]:text-primary [&#38;.highlight-bg-translucent]:bg-muted" href="#10-总结">10. 总结</a> </div>  </li> </ul> </li> </ul> </toc-heading> <script type="module">class l extends HTMLElement{constructor(){super(),this.headings=[],this.tocLinks=[],this.headingProgress={},this.updatePositionAndStyle=()=>{const t=window.innerHeight,r=window.scrollY-(document.querySelector("#content")?.offsetTop||0),o=(document.querySelector("#content")?.offsetHeight||0)+127;this.headings.forEach((e,n)=>{const h=this.headings[n+1]?.offsetTop||o,s=[e.offsetTop-r,h-r-e.offsetHeight],i=(t-s[0])/(s[1]-s[0]);this.headingProgress[e.id]={inView:s[0]<t&&s[1]>0,progress:Math.max(0,Math.min(1,i))}}),this.tocLinks.forEach(({element:e,progressBar:n,slug:h},s)=>{const{inView:i,progress:g}=this.headingProgress[h];this.headingProgress[h]&&(e.classList.toggle("highlight",i),e.classList.toggle("highlight-bg-translucent",i),e.classList.toggle("rounded-t-2xl",i&&(s===0||!this.headingProgress[this.tocLinks[s-1]?.slug].inView)),e.classList.toggle("rounded-b-2xl",i&&(s===this.tocLinks.length-1||!this.headingProgress[this.tocLinks[s+1]?.slug].inView)),n.classList.toggle("is-read",!i&&g===1),n.classList.toggle("highlight-bg",i),n.style.setProperty("height",`${g*90}%`))})},this.headings=Array.from(document.querySelectorAll("article h1, article h2, article h3, article h4, article h5, article h6")),this.tocLinks=Array.from(this.querySelectorAll('a[href^="#"]')).map(t=>({element:t,progressBar:t.previousElementSibling,slug:(t.getAttribute("href")||"").substring(1)}))}connectedCallback(){this.tocLinks.forEach(t=>{t.element.addEventListener("click",r=>{r.preventDefault();const o=this.headings.find(e=>e.id===t.slug);o?(history.pushState(null,o.textContent||"",t.element.getAttribute("href")),o.scrollIntoView({behavior:"smooth"})):console.warn(`No heading found for slug: ${t.slug}`)})}),setInterval(this.updatePositionAndStyle,100),window.addEventListener("scroll",this.updatePositionAndStyle)}}customElements.define("toc-heading",l);</script>  </aside> <div id="sidebar-shade" class="fixed top-0 start-0 w-full h-full astro-scuu7fyy" style="display:none;background-color:#00000091;z-index:31"></div> <article class="min-w-0 grow astro-scuu7fyy">  <div id="content-header" class="animate astro-scuu7fyy"> <div class="hero-image relative mb-6 astro-efce2lj7"><img src="/_astro/thumbnail.BSS8RXC9_1yNJfb.webp" alt="thumbnail.png" fetchpriority="high" loading="eager" color="#4952BE" decoding="async" width="1774" height="887" class="cover-image relative z-10 h-auto w-full max-w-[65ch] rounded-2xl object-contain astro-efce2lj7"><img src="/_astro/thumbnail.BSS8RXC9_1yNJfb.webp" alt="thumbnail.png" fetchpriority="high" loading="eager" id="blurImage" color="#4952BE" decoding="async" width="1774" height="887" class="absolute end-0 top-4 z-0 mt-0 h-full max-w-[65ch] rounded-3xl opacity-60 transition-opacity duration-300 astro-efce2lj7"></div><div class="article-info max-lg:mx-auto astro-efce2lj7"> <div class="flex flex-wrap gap-x-4 gap-y-2 text-xs leading-6 text-muted-foreground astro-efce2lj7">  <div class="flex items-center gap-1 astro-efce2lj7"> <svg aria-hidden="true" class="size-5 astro-efce2lj7 astro-sa4wfxel" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><g fill="none" fill-rule="evenodd"><path d="m12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036q-.016-.004-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M16 3a1 1 0 0 1 1 1v1h2a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2V4a1 1 0 0 1 2 0v1h6V4a1 1 0 0 1 1-1M8 7H5v2h14V7h-3zm-3 4v8h14v-8zm2 2a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2H8a1 1 0 0 1-1-1m1 2a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2zm3-2a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2H12a1 1 0 0 1-1-1m1 2a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2zm3-2a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2H16a1 1 0 0 1-1-1m1 2a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2z"/></g></svg>  <span class="text-muted-foreground font-mono font-sans astro-efce2lj7"> <time datetime="2026-04-29T02:35:00.000Z"> Apr 29, 2026 </time> </span>  </div>  <div class="flex items-center gap-1 astro-efce2lj7"> <svg aria-hidden="true" class="size-5 astro-efce2lj7 astro-sa4wfxel" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><g fill="none"><path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2m0 2a8 8 0 1 0 0 16a8 8 0 0 0 0-16m0 2a1 1 0 0 1 .993.883L13 7v4.586l2.707 2.707a1 1 0 0 1-1.32 1.497l-.094-.083l-3-3a1 1 0 0 1-.284-.576L11 12V7a1 1 0 0 1 1-1"/></g></svg>  17 min </div> <span class="flex items-center gap-1 astro-efce2lj7"> <svg aria-hidden="true" class="size-5 astro-efce2lj7 astro-sa4wfxel" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><g fill="none" fill-rule="evenodd"><path d="m12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036q-.016-.004-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2m1.482 14.94a18 18 0 0 1-2.964 0q.14.596.31 1.102c.251.755.53 1.293.79 1.622c.127.162.23.248.3.29l.051.028l.03.008l.032-.008l.051-.027a1.2 1.2 0 0 0 .3-.29c.26-.33.539-.868.79-1.623q.17-.506.31-1.102m-8.675-1.435a8.03 8.03 0 0 0 4.441 4.01a11 11 0 0 1-.318-.84a16 16 0 0 1-.52-2.033a18 18 0 0 1-3.603-1.137m14.387 0c-1.145.5-2.351.883-3.605 1.137a16 16 0 0 1-.52 2.034q-.144.437-.318.838a8.03 8.03 0 0 0 4.443-4.01Zm-5.218-4.634a15 15 0 0 1-3.952 0a26 26 0 0 0 .141 4.025a16.2 16.2 0 0 0 3.67 0A25 25 0 0 0 14 12q0-.576-.024-1.13ZM4.568 9.032a8 8 0 0 0-.52 3.856a16 16 0 0 0 4.067 1.637a28 28 0 0 1-.074-4.053a15 15 0 0 1-3.473-1.44m14.864 0a15 15 0 0 1-3.473 1.44a28 28 0 0 1-.074 4.053a16 16 0 0 0 4.066-1.637a8 8 0 0 0-.52-3.855Zm-7.416-5.02l-.011-.002l-.02.003l-.038.015a1.2 1.2 0 0 0-.33.307c-.26.33-.538.868-.79 1.622c-.27.808-.488 1.8-.633 2.919a13 13 0 0 0 3.612 0c-.145-1.12-.364-2.111-.633-2.919c-.252-.754-.53-1.293-.79-1.622a1.2 1.2 0 0 0-.3-.29l-.067-.032Zm-2.768.474a8 8 0 0 0-3.71 2.797c.843.484 1.746.876 2.695 1.163c.16-1.164.397-2.223.697-3.122q.145-.438.318-.838m5.504 0q.172.4.318.838c.3.9.537 1.958.697 3.122a13 13 0 0 0 2.695-1.163a8 8 0 0 0-3.71-2.797"/></g></svg>  zh </span> <span class="flex items-center gap-1 astro-efce2lj7"> <svg aria-hidden="true" class="size-5 astro-efce2lj7 astro-sa4wfxel" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><g fill="none" fill-rule="evenodd"><path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M10.124 3.008a1 1 0 0 1 .868 1.116L10.508 8h3.984l.516-4.124a1 1 0 1 1 1.984.248L16.508 8H20a1 1 0 1 1 0 2h-3.742l-.5 4H19.5a1 1 0 1 1 0 2h-3.992l-.516 4.124a1 1 0 1 1-1.984-.248L13.492 16H9.508l-.516 4.124a1 1 0 1 1-1.984-.248L7.492 16H4.5a1 1 0 1 1 0-2h3.242l.5-4H5a1 1 0 0 1 0-2h3.492l.516-4.124a1 1 0 0 1 1.116-.868M13.742 14l.5-4h-3.984l-.5 4z"/></g></svg>  <div class="astro-efce2lj7"> <a aria-label="View more blogs with the tag ai agent" class="hover:underline hover:underline-offset-4 astro-efce2lj7" data-pagefind-filter="tag" href="/tags/ai agent"> ai agent </a> / </div><div class="astro-efce2lj7"> <a aria-label="View more blogs with the tag cursor" class="hover:underline hover:underline-offset-4 astro-efce2lj7" data-pagefind-filter="tag" href="/tags/cursor"> cursor </a> / </div><div class="astro-efce2lj7"> <a aria-label="View more blogs with the tag claude code" class="hover:underline hover:underline-offset-4 astro-efce2lj7" data-pagefind-filter="tag" href="/tags/claude code"> claude code </a> / </div><div class="astro-efce2lj7"> <a aria-label="View more blogs with the tag agents.md" class="hover:underline hover:underline-offset-4 astro-efce2lj7" data-pagefind-filter="tag" href="/tags/agents.md"> agents.md </a> / </div><div class="astro-efce2lj7"> <a aria-label="View more blogs with the tag 工程实践" class="hover:underline hover:underline-offset-4 astro-efce2lj7" data-pagefind-filter="tag" href="/tags/工程实践"> 工程实践 </a>  </div> </span> </div> <h1 class="mt-4 text-2xl font-medium sm:mb-2 sm:mt-6 sm:text-3xl astro-efce2lj7"> AGENTS.md 用法：Cursor 与 Claude Code 最佳实践 </h1> <div class="mt-3 italic astro-efce2lj7"> <blockquote class="text-sm text-muted-foreground astro-efce2lj7"><q class="astro-efce2lj7">以 lynx-stack 项目为例，介绍 AGENTS.md 的定位、写法、分层策略，以及在 Cursor、Claude Code 等 AI 编程工具中的结合方式。</q></blockquote>  </div> </div>  <div class="mt-4 w-1/2 border-t max-md:mx-auto sm:mt-6 sm:w-1/3 astro-efce2lj7"></div> <script type="module">const o=window.innerHeight,s=o/9,i=o*2/9,l=o*3/9,e=document.getElementById("blurImage");e&&window.addEventListener("scroll",()=>{const t=window.scrollY;t>=l?e.style.opacity="0.15":t>=i?e.style.opacity="0.3":t>=s&&(e.style.opacity="0.45")});</script>  </div>  <div id="content" class="max-w-none animate mt-8 md:min-w-[45ch] overflow-x-hidden prose text-base text-muted-foreground astro-scuu7fyy">   <h1 id="agentsmd-用法cursor-与-claude-code-最佳实践">AGENTS.md 用法：Cursor 与 Claude Code 最佳实践<a class="anchor" href="#agentsmd-用法cursor-与-claude-code-最佳实践">#</a></h1>
+<p>如果说 <code>README.md</code> 是写给人类开发者的项目入口，<code>AGENTS.md</code> 就更像是写给 AI 编程代理的“项目操作手册”。它不只是告诉 agent 项目是什么，还要告诉 agent：</p>
+<ul>
+<li>应该用什么包管理器、Node 版本、构建命令和测试命令。</li>
+<li>哪些目录是核心模块，修改时需要理解哪些数据流。</li>
+<li>哪些命令有前置条件，例如测试前必须先 build。</li>
+<li>哪些产物不能手动修改，哪些变更必须同步生成 API 文档或 changeset。</li>
+<li>当进入某个子系统时，是否存在更局部、更具体的规则。</li>
+</ul>
+<p>本文结合 <a href="https://github.com/lynx-family/lynx-stack" rel="nofollow noopener noreferrer" target="_blank">lynx-family/lynx-stack<span> ↗</span></a> 的实践，聊聊 <code>AGENTS.md</code> 应该怎么写，以及如何和 Cursor、Claude Code 等 AI 编程工具配合使用。</p>
+<h2 id="1-agentsmd-解决的核心问题">1. AGENTS.md 解决的核心问题<a class="anchor" href="#1-agentsmd-解决的核心问题">#</a></h2>
+<p>AI 编程工具真正影响产出质量的，不只是模型能力，还有上下文质量。一个大型仓库里，agent 如果不知道项目约定，很容易犯这些错误：</p>
+<ul>
+<li>用错包管理器，例如项目要求 <code>pnpm</code>，但 agent 直接跑了 <code>npm install</code>。</li>
+<li>跳过必要前置步骤，例如没有先构建 Rust / native bindings 就直接跑测试。</li>
+<li>只看当前文件，忽略 monorepo 中跨 package 的依赖关系。</li>
+<li>修改了生成产物，却没有修改源文件。</li>
+<li>不知道某个子目录的架构，把局部实现当成普通 React 组件来改。</li>
+</ul>
+<p><code>AGENTS.md</code> 的价值，就是把这些“资深维护者脑子里的隐性知识”变成可被 agent 自动读取的显性规则。</p>
+<h2 id="2-从-lynx-stack-看仓库级-agentsmd-应该写什么">2. 从 lynx-stack 看仓库级 AGENTS.md 应该写什么<a class="anchor" href="#2-从-lynx-stack-看仓库级-agentsmd-应该写什么">#</a></h2>
+<p><code>lynx-stack</code> 是一个典型的大型 monorepo，包含 ReactLynx、Rspeedy、Lynx for Web、testing utilities 等模块，主要语言是 TypeScript / JavaScript，同时还包含 Rust native bindings。</p>
+<p>它的根目录 <code>AGENTS.md</code> 做得比较好的地方是：没有泛泛地写“请遵守项目规范”，而是把 agent 最容易做错、最需要提前知道的事情写清楚。</p>
+<h3 id="21-先给仓库画像">2.1 先给仓库画像<a class="anchor" href="#21-先给仓库画像">#</a></h3>
+<p>根目录文档一开始就说明：</p>
+<ul>
+<li>这是 Lynx 的 core JavaScript stack。</li>
+<li>仓库规模是大型 monorepo，包含约 49 个 package。</li>
+<li>主要语言是 TypeScript / JavaScript / Rust。</li>
+<li>构建系统是 Turbo monorepo + pnpm workspaces。</li>
+<li>目标运行时包括 Node.js、浏览器和移动端。</li>
+</ul>
+<p>这类信息很重要，因为 agent 在选择修改策略时会受到它影响。比如看到 “Rust native bindings”，agent 就会意识到有些测试失败可能不是普通 TypeScript 编译错误，而是 native 构建链路问题。</p>
+<h3 id="22-把命令写成可执行路径而不是命令清单">2.2 把命令写成可执行路径，而不是命令清单<a class="anchor" href="#22-把命令写成可执行路径而不是命令清单">#</a></h3>
+<p>lynx-stack 的根目录 <code>AGENTS.md</code> 不是简单罗列命令，而是强调顺序：</p>
+<div class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><pre><code><span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">npm</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> install</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -g</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> corepack</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">corepack</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> enable</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">pnpm</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> install</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> --frozen-lockfile</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">pnpm</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> turbo</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> build</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">pnpm</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> test</span></span></code></pre><span class="language ps-1 pe-3 text-sm bg-muted text-muted-foreground">bash</span><button class="copy text-muted-foreground p-1 box-content border rounded bg-primary-foreground" data-code="npm install -g corepack
+corepack enable
+pnpm install --frozen-lockfile
+pnpm turbo build
+pnpm test" onclick="
+          navigator.clipboard.writeText(this.dataset.code);
+          this.classList.add(&#x27;copied&#x27;);
+          setTimeout(() => this.classList.remove(&#x27;copied&#x27;), 2000)
+        "><div class="ready"><svg class="size-5"><use href="/icons/code.svg#mingcute-clipboard-line"></use></svg></div><div class="success hidden"><svg class="size-5"><use href="/icons/code.svg#mingcute-file-check-line"></use></svg></div></button></div>
+<p>并且明确写出：</p>
+<blockquote>
+<p>Always run full build before tests. Watch mode only compiles TypeScript, not Rust components.</p>
+</blockquote>
+<p>这比“测试命令是 <code>pnpm test</code>”有用得多。因为 agent 最常见的问题不是不知道测试命令，而是不知道测试命令之前必须做什么。</p>
+<p>一个好的 <code>AGENTS.md</code> 应该尽量回答：</p>
+<ul>
+<li>第一次进入仓库怎么安装依赖？</li>
+<li>修改后最小验证命令是什么？</li>
+<li>完整验证命令是什么？</li>
+<li>哪些命令慢，需要设置更长 timeout？</li>
+<li>哪些命令会改文件，改完后是否需要提交生成结果？</li>
+</ul>
+<h3 id="23-记录常见失败与恢复方式">2.3 记录常见失败与恢复方式<a class="anchor" href="#23-记录常见失败与恢复方式">#</a></h3>
+<p>lynx-stack 还把常见构建问题写进了文档，例如：</p>
+<ul>
+<li>Rust 编译失败时如何安装或更新 Rust toolchain。</li>
+<li>API Report 变化时需要运行 <code>pnpm turbo api-extractor -- --local</code> 并提交 <code>api.md</code>。</li>
+<li>测试缺少 build artifacts 时，先运行 <code>pnpm turbo build</code>。</li>
+<li>大型构建内存不足时设置 <code>NODE_OPTIONS="--max-old-space-size=32768"</code>。</li>
+</ul>
+<p>这类内容对 agent 特别有价值。因为 agent 遇到报错时，如果上下文里已经有“已知故障模式”，就更可能沿着项目推荐路径修复环境，而不是随意改业务代码绕过错误。</p>
+<h3 id="24-写清楚-ci-验证管线">2.4 写清楚 CI 验证管线<a class="anchor" href="#24-写清楚-ci-验证管线">#</a></h3>
+<p>根目录 <code>AGENTS.md</code> 还总结了 CI 会跑哪些检查：</p>
+<ol>
+<li>code style</li>
+<li>API consistency</li>
+<li>changeset validation</li>
+<li>lint</li>
+<li>TypeScript compilation</li>
+<li>unit tests</li>
+<li>E2E tests</li>
+<li>Rust tests</li>
+<li>type checking</li>
+</ol>
+<p>这能帮助 agent 判断“我的本地验证是否足够接近 CI”。如果一个变更只影响某个小 package，agent 可以选择更聚焦的测试；如果变更影响公共 API，就知道需要额外跑 API extractor。</p>
+<h2 id="3-子目录-agentsmd把上下文放到离代码最近的地方">3. 子目录 AGENTS.md：把上下文放到离代码最近的地方<a class="anchor" href="#3-子目录-agentsmd把上下文放到离代码最近的地方">#</a></h2>
+<p>大型仓库只写根目录 <code>AGENTS.md</code> 还不够。根目录适合写全局约定，但子系统的架构细节应该放到对应目录下。</p>
+<p>lynx-stack 在 A2UI 相关目录新增了两个子目录级说明：</p>
+<div class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="txt"><pre><code><span class="line"><span>packages/genui/a2ui/AGENTS.md</span></span>
+<span class="line"><span>packages/genui/a2ui-playground/AGENTS.md</span></span></code></pre><span class="language ps-1 pe-3 text-sm bg-muted text-muted-foreground">txt</span><button class="copy text-muted-foreground p-1 box-content border rounded bg-primary-foreground" data-code="packages/genui/a2ui/AGENTS.md
+packages/genui/a2ui-playground/AGENTS.md" onclick="
+          navigator.clipboard.writeText(this.dataset.code);
+          this.classList.add(&#x27;copied&#x27;);
+          setTimeout(() => this.classList.remove(&#x27;copied&#x27;), 2000)
+        "><div class="ready"><svg class="size-5"><use href="/icons/code.svg#mingcute-clipboard-line"></use></svg></div><div class="success hidden"><svg class="size-5"><use href="/icons/code.svg#mingcute-file-check-line"></use></svg></div></button></div>
+<p>这两个文件的价值，是让 agent 进入 A2UI 目录时能快速获得局部架构知识。</p>
+<h3 id="31-a2ui说明运行时数据流">3.1 a2ui：说明运行时数据流<a class="anchor" href="#31-a2ui说明运行时数据流">#</a></h3>
+<p><code>packages/genui/a2ui/AGENTS.md</code> 解释了 <code>@lynx-js/a2ui-reactlynx</code> 的核心流程：</p>
+<div class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="txt"><pre><code><span class="line"><span>A2UI messages</span></span>
+<span class="line"><span>  -> processor</span></span>
+<span class="line"><span>  -> Surface state</span></span>
+<span class="line"><span>  -> Resource update</span></span>
+<span class="line"><span>  -> A2UIRender</span></span>
+<span class="line"><span>  -> ReactLynx UI</span></span></code></pre><span class="language ps-1 pe-3 text-sm bg-muted text-muted-foreground">txt</span><button class="copy text-muted-foreground p-1 box-content border rounded bg-primary-foreground" data-code="A2UI messages
+  -> processor
+  -> Surface state
+  -> Resource update
+  -> A2UIRender
+  -> ReactLynx UI" onclick="
+          navigator.clipboard.writeText(this.dataset.code);
+          this.classList.add(&#x27;copied&#x27;);
+          setTimeout(() => this.classList.remove(&#x27;copied&#x27;), 2000)
+        "><div class="ready"><svg class="size-5"><use href="/icons/code.svg#mingcute-clipboard-line"></use></svg></div><div class="success hidden"><svg class="size-5"><use href="/icons/code.svg#mingcute-file-check-line"></use></svg></div></button></div>
+<p>它进一步说明：</p>
+<ul>
+<li><code>processor</code> 负责处理 <code>createSurface</code>、<code>updateComponents</code>、<code>updateDataModel</code> 等协议消息。</li>
+<li>每个 <code>Surface</code> 维护 <code>components</code>、<code>resources</code> 和 <code>store</code>。</li>
+<li><code>A2UIRender</code> 根据 <code>Resource</code> 渲染 surface root 或单个 component node。</li>
+<li><code>componentRegistry</code> 把协议组件名映射到实际 ReactLynx renderer。</li>
+<li>catalog component 会通过副作用注册到 registry。</li>
+</ul>
+<p>如果没有这份文档，agent 很可能只看到一个 <code>index.tsx</code> 就开始改组件，却不知道组件渲染依赖协议消息、资源对象、数据绑定和模板展开。</p>
+<h3 id="32-a2ui说明如何扩展-catalog-component">3.2 a2ui：说明如何扩展 catalog component<a class="anchor" href="#32-a2ui说明如何扩展-catalog-component">#</a></h3>
+<p>更实用的是，A2UI 的 <code>AGENTS.md</code> 还写了新增 catalog component 的步骤：</p>
+<ol>
+<li>新建 <code>src/catalog/Foo/index.tsx</code>。</li>
+<li>组件函数名必须叫 <code>Foo</code>，和目录名一致。</li>
+<li>新建 <code>src/catalog/Foo.ts</code>。</li>
+<li>加到 <code>src/catalog/all.ts</code>。</li>
+<li>加到 <code>package.json</code> exports。</li>
+<li>运行 build，确认生成 <code>dist/catalog/Foo/catalog.json</code>。</li>
+</ol>
+<p>这就是典型的 agent 友好信息：不是抽象原则，而是能直接执行的 checklist。</p>
+<h3 id="33-a2ui-playground说明看起来像-web其实渲染在-lynx-app">3.3 a2ui-playground：说明“看起来像 Web，其实渲染在 Lynx app”<a class="anchor" href="#33-a2ui-playground说明看起来像-web其实渲染在-lynx-app">#</a></h3>
+<p><code>packages/genui/a2ui-playground/AGENTS.md</code> 解决的是另一个常见误区：playground 里有两层东西。</p>
+<ul>
+<li>浏览器里的 React DOM control panel：负责选择 demo、构造 <code>initData</code>。</li>
+<li>真正渲染 A2UI 的 Lynx app：通过 <code>BaseClient</code>、<code>processor.processMessages(...)</code> 和 <code>&#x3C;A2UIRender /></code> 回放消息并渲染。</li>
+</ul>
+<p>它还指出 <code>/render.html</code> 是桥接层，会创建 <code>&#x3C;lynx-view></code>，把 base64 payload 传给 Lynx runtime。</p>
+<p>这类说明可以显著减少 agent 的误判：如果要改 A2UI 渲染效果，不应该只盯着 control panel；如果要改 demo 切换逻辑，也不应该直接改 runtime。</p>
+<h2 id="4-cursor-如何使用-agentsmd">4. Cursor 如何使用 AGENTS.md<a class="anchor" href="#4-cursor-如何使用-agentsmd">#</a></h2>
+<p>在 Cursor / Cursor Agent / Cursor Cloud 这类环境中，<code>AGENTS.md</code> 通常会被作为 agent instructions 或 workspace rules 的一部分读取。</p>
+<p>典型流程可以理解为：</p>
+<ol>
+<li>agent 启动或打开仓库时读取根目录说明。</li>
+<li>当任务涉及某个子目录时，再读取更靠近代码的 <code>AGENTS.md</code>。</li>
+<li>把这些内容加入模型上下文。</li>
+<li>agent 在搜索、修改、测试、提交时遵守这些规则。</li>
+</ol>
+<p>在实际使用中，<code>AGENTS.md</code> 对 Cursor 最有帮助的内容包括：</p>
+<ul>
+<li>项目命令：安装、开发、构建、测试、格式化。</li>
+<li>修改边界：哪些目录是生成产物，哪些文件不要手改。</li>
+<li>测试策略：改某类文件应该跑哪些测试。</li>
+<li>子系统架构：某个目录的入口、数据流、常见扩展步骤。</li>
+<li>常见问题：构建失败、缓存失效、依赖安装失败的恢复方式。</li>
+</ul>
+<p>对于 Cursor Cloud 这种自动执行任务的 agent，<code>AGENTS.md</code> 的作用会更明显。因为它不仅回答“项目是什么”，还影响 agent 是否能一次性完成实现、验证、提交和 PR 描述。</p>
+<h2 id="5-claude-code-如何使用-agentsmd">5. Claude Code 如何使用 AGENTS.md<a class="anchor" href="#5-claude-code-如何使用-agentsmd">#</a></h2>
+<p>Claude Code 生态里更常见的项目说明文件是 <code>CLAUDE.md</code>。很多项目会把 Claude Code 专属规则写在这里，例如：</p>
+<div class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="txt"><pre><code><span class="line"><span>CLAUDE.md</span></span></code></pre><span class="language ps-1 pe-3 text-sm bg-muted text-muted-foreground">txt</span><button class="copy text-muted-foreground p-1 box-content border rounded bg-primary-foreground" data-code="CLAUDE.md" onclick="
+          navigator.clipboard.writeText(this.dataset.code);
+          this.classList.add(&#x27;copied&#x27;);
+          setTimeout(() => this.classList.remove(&#x27;copied&#x27;), 2000)
+        "><div class="ready"><svg class="size-5"><use href="/icons/code.svg#mingcute-clipboard-line"></use></svg></div><div class="success hidden"><svg class="size-5"><use href="/icons/code.svg#mingcute-file-check-line"></use></svg></div></button></div>
+<p>不过 <code>AGENTS.md</code> 正在变成更中立的跨工具约定。实际行为取决于工具版本和运行环境：</p>
+<ul>
+<li>Claude Code 通常会自动读取 <code>CLAUDE.md</code>。</li>
+<li>一些 wrapper、agent runner 或团队规范会额外读取 <code>AGENTS.md</code>。</li>
+<li>用户也可以在对话中显式要求 Claude Code 查看 <code>AGENTS.md</code>。</li>
+<li>如果同时存在根目录和子目录说明，通常应让更靠近代码的规则补充全局规则。</li>
+</ul>
+<p>我的建议是：</p>
+<ul>
+<li><code>AGENTS.md</code> 写跨工具、跨 agent 的通用项目规则。</li>
+<li><code>CLAUDE.md</code> 写 Claude Code 特有的补充说明，或者保留对 <code>AGENTS.md</code> 的引用。</li>
+<li><code>.cursor/rules</code> 写 Cursor IDE 特有的交互规则、文件匹配规则或 UI 工作流。</li>
+<li><code>.github/copilot-instructions.md</code> 写 GitHub Copilot 相关说明。</li>
+</ul>
+<p>这样可以避免把所有工具规则混在一起，也能保证核心工程知识只维护一份。</p>
+<h2 id="6-agentsmd-的分层最佳实践">6. AGENTS.md 的分层最佳实践<a class="anchor" href="#6-agentsmd-的分层最佳实践">#</a></h2>
+<p>一个可维护的 agent 说明体系，可以按三层设计。</p>
+<h3 id="61-根目录仓库级规则">6.1 根目录：仓库级规则<a class="anchor" href="#61-根目录仓库级规则">#</a></h3>
+<p>适合写：</p>
+<ul>
+<li>项目概览。</li>
+<li>技术栈。</li>
+<li>安装、构建、测试、格式化命令。</li>
+<li>CI 验证管线。</li>
+<li>目录结构。</li>
+<li>全局编码约定。</li>
+<li>常见环境问题。</li>
+</ul>
+<p>示例：</p>
+<div class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="md"><pre><code><span class="line"><span style="color:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold"># Project Overview</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">This is an Astro 5 personal blog using the astro-pure theme.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold">## Commands</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">-</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> bun install</span></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">-</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> bun dev</span></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">-</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> bun run build</span></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">-</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> bun run check</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold">## Content</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">Blog posts live in src/content/blog.</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">Each post must include title, description, publishDate, tags, draft and comment.</span></span></code></pre><span class="language ps-1 pe-3 text-sm bg-muted text-muted-foreground">md</span><button class="copy text-muted-foreground p-1 box-content border rounded bg-primary-foreground" data-code="# Project Overview
+
+This is an Astro 5 personal blog using the astro-pure theme.
+
+## Commands
+
+- bun install
+- bun dev
+- bun run build
+- bun run check
+
+## Content
+
+Blog posts live in src/content/blog.
+Each post must include title, description, publishDate, tags, draft and comment." onclick="
+          navigator.clipboard.writeText(this.dataset.code);
+          this.classList.add(&#x27;copied&#x27;);
+          setTimeout(() => this.classList.remove(&#x27;copied&#x27;), 2000)
+        "><div class="ready"><svg class="size-5"><use href="/icons/code.svg#mingcute-clipboard-line"></use></svg></div><div class="success hidden"><svg class="size-5"><use href="/icons/code.svg#mingcute-file-check-line"></use></svg></div></button></div>
+<h3 id="62-子目录局部架构和操作步骤">6.2 子目录：局部架构和操作步骤<a class="anchor" href="#62-子目录局部架构和操作步骤">#</a></h3>
+<p>适合写：</p>
+<ul>
+<li>当前目录负责什么。</li>
+<li>修改入口在哪里。</li>
+<li>数据流怎么走。</li>
+<li>新增一种组件 / 插件 / 页面需要改哪些文件。</li>
+<li>当前目录相关的测试命令。</li>
+</ul>
+<p>比如 <code>src/content/AGENTS.md</code> 可以写：</p>
+<div class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="md"><pre><code><span class="line"><span style="color:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold"># Content Guidelines</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">Blog posts are Markdown or MDX files under src/content/blog.</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">Use Chinese for posts by default.</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">Keep frontmatter aligned with src/content.config.ts.</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">Run bun run build after adding or changing public content.</span></span></code></pre><span class="language ps-1 pe-3 text-sm bg-muted text-muted-foreground">md</span><button class="copy text-muted-foreground p-1 box-content border rounded bg-primary-foreground" data-code="# Content Guidelines
+
+Blog posts are Markdown or MDX files under src/content/blog.
+Use Chinese for posts by default.
+Keep frontmatter aligned with src/content.config.ts.
+Run bun run build after adding or changing public content." onclick="
+          navigator.clipboard.writeText(this.dataset.code);
+          this.classList.add(&#x27;copied&#x27;);
+          setTimeout(() => this.classList.remove(&#x27;copied&#x27;), 2000)
+        "><div class="ready"><svg class="size-5"><use href="/icons/code.svg#mingcute-clipboard-line"></use></svg></div><div class="success hidden"><svg class="size-5"><use href="/icons/code.svg#mingcute-file-check-line"></use></svg></div></button></div>
+<h3 id="63-工具专属文件只写工具差异">6.3 工具专属文件：只写工具差异<a class="anchor" href="#63-工具专属文件只写工具差异">#</a></h3>
+<p>如果项目同时使用 Cursor、Claude Code、Copilot，可以避免在每个文件里重复项目介绍：</p>
+<div class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="txt"><pre><code><span class="line"><span>AGENTS.md                         # 通用规则</span></span>
+<span class="line"><span>CLAUDE.md                         # Claude Code 补充</span></span>
+<span class="line"><span>.cursor/rules/*.mdc               # Cursor 补充</span></span>
+<span class="line"><span>.github/copilot-instructions.md   # Copilot 补充</span></span></code></pre><span class="language ps-1 pe-3 text-sm bg-muted text-muted-foreground">txt</span><button class="copy text-muted-foreground p-1 box-content border rounded bg-primary-foreground" data-code="AGENTS.md                         # 通用规则
+CLAUDE.md                         # Claude Code 补充
+.cursor/rules/*.mdc               # Cursor 补充
+.github/copilot-instructions.md   # Copilot 补充" onclick="
+          navigator.clipboard.writeText(this.dataset.code);
+          this.classList.add(&#x27;copied&#x27;);
+          setTimeout(() => this.classList.remove(&#x27;copied&#x27;), 2000)
+        "><div class="ready"><svg class="size-5"><use href="/icons/code.svg#mingcute-clipboard-line"></use></svg></div><div class="success hidden"><svg class="size-5"><use href="/icons/code.svg#mingcute-file-check-line"></use></svg></div></button></div>
+<p>工具专属文件只写差异，例如：</p>
+<ul>
+<li>Cursor 是否需要手动截图或录屏。</li>
+<li>Claude Code 是否需要优先使用某些命令。</li>
+<li>Copilot 在生成测试时需要遵守哪些命名模式。</li>
+</ul>
+<h2 id="7-agentsmd-应该避免什么">7. AGENTS.md 应该避免什么<a class="anchor" href="#7-agentsmd-应该避免什么">#</a></h2>
+<p><code>AGENTS.md</code> 不是越长越好。它应该帮助 agent 更快做对事情，而不是把所有文档复制一遍。</p>
+<p>不建议写：</p>
+<ul>
+<li>密钥、token、内部账号。</li>
+<li>和真实 CI 不一致的命令。</li>
+<li>很快会过期的临时说明。</li>
+<li>大段产品背景，但没有操作价值。</li>
+<li>“写高质量代码”这种没有约束力的空话。</li>
+<li>与 README、CONTRIBUTING 完全重复的内容。</li>
+</ul>
+<p>更好的写法是把规则写成可验证的动作：</p>
+<div class="overflow-x-auto w-full flex justify-center">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>不推荐</th><th>推荐</th></tr></thead><tbody><tr><td>注意测试</td><td>修改内容后运行 <code>bun run build</code></td></tr><tr><td>遵守项目结构</td><td>新博客放在 <code>src/content/blog/&#x3C;slug>/index.md</code></td></tr><tr><td>不要乱改代码</td><td>不要手动编辑 <code>dist/</code>、<code>.astro/</code>、<code>node_modules/</code></td></tr><tr><td>保持风格一致</td><td>frontmatter 字段遵循 <code>src/content.config.ts</code></td></tr></tbody></table></div>
+<h2 id="8-给-johniexugithubio-的落地建议">8. 给 johniexu.github.io 的落地建议<a class="anchor" href="#8-给-johniexugithubio-的落地建议">#</a></h2>
+<p>当前这个博客项目是 Astro 5 + astro-pure，内容集中在 <code>src/content/blog</code> 和 <code>src/content/docs</code>。相比 lynx-stack，它不是大型 monorepo，但仍然适合加两类 <code>AGENTS.md</code>：</p>
+<h3 id="81-根目录-agentsmd">8.1 根目录 AGENTS.md<a class="anchor" href="#81-根目录-agentsmd">#</a></h3>
+<p>根目录说明应该告诉 agent：</p>
+<ul>
+<li>这是个人博客项目。</li>
+<li>使用 Astro 5、astro-pure、UnoCSS、TypeScript。</li>
+<li>常用命令是 <code>bun install</code>、<code>bun dev</code>、<code>bun run build</code>、<code>bun run check</code>、<code>bun run lint</code>、<code>bun run format</code>。</li>
+<li>新增公开内容后至少运行 <code>bun run build</code>。</li>
+<li>部署从 <code>next</code> 分支触发 GitHub Pages workflow。</li>
+</ul>
+<h3 id="82-srccontentagentsmd">8.2 src/content/AGENTS.md<a class="anchor" href="#82-srccontentagentsmd">#</a></h3>
+<p>内容目录说明应该告诉 agent：</p>
+<ul>
+<li>博客文章使用 Markdown / MDX。</li>
+<li>推荐结构是 <code>src/content/blog/&#x3C;slug>/index.md</code>。</li>
+<li>frontmatter 必须满足 <code>src/content.config.ts</code>。</li>
+<li>中文技术文章默认设置 <code>language: 'zh'</code>。</li>
+<li><code>description</code> 控制摘要展示，应该简洁。</li>
+<li><code>draft: false</code> 才会公开发布。</li>
+</ul>
+<p>这样一来，后续用 Cursor 或 Claude Code 新增文章时，agent 不需要每次都重新摸索 Astro collection schema。</p>
+<h2 id="9-一份实用的-agentsmd-模板">9. 一份实用的 AGENTS.md 模板<a class="anchor" href="#9-一份实用的-agentsmd-模板">#</a></h2>
+<p>可以从下面这个模板开始，然后按项目真实情况裁剪：</p>
+<div class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="md"><pre><code><span class="line"><span style="color:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold"># Project Name</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold">## Overview</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">Explain what this repository does, the main stack, and the runtime targets.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold">## Commands</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">-</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> Install: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">`...`</span></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">-</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> Dev: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">`...`</span></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">-</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> Build: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">`...`</span></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">-</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> Test: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">`...`</span></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">-</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> Format: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">`...`</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold">## Architecture</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">-</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> `src/foo`</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: ...</span></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">-</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> `src/bar`</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: ...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold">## Change Guidelines</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">-</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> Add new feature code in ...</span></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">-</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> Do not edit generated files in ...</span></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">-</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> Keep public API changes in sync with ...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold">## Testing</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">-</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> For content changes, run ...</span></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">-</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> For UI changes, run ...</span></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">-</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> For API changes, run ...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold">## Common Issues</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">-</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> If X fails, try Y.</span></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">-</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> If generated files are stale, run Z.</span></span></code></pre><span class="language ps-1 pe-3 text-sm bg-muted text-muted-foreground">md</span><button class="copy text-muted-foreground p-1 box-content border rounded bg-primary-foreground" data-code="# Project Name
+
+## Overview
+
+Explain what this repository does, the main stack, and the runtime targets.
+
+## Commands
+
+- Install: &#x60;...&#x60;
+- Dev: &#x60;...&#x60;
+- Build: &#x60;...&#x60;
+- Test: &#x60;...&#x60;
+- Format: &#x60;...&#x60;
+
+## Architecture
+
+- &#x60;src/foo&#x60;: ...
+- &#x60;src/bar&#x60;: ...
+
+## Change Guidelines
+
+- Add new feature code in ...
+- Do not edit generated files in ...
+- Keep public API changes in sync with ...
+
+## Testing
+
+- For content changes, run ...
+- For UI changes, run ...
+- For API changes, run ...
+
+## Common Issues
+
+- If X fails, try Y.
+- If generated files are stale, run Z." onclick="
+          navigator.clipboard.writeText(this.dataset.code);
+          this.classList.add(&#x27;copied&#x27;);
+          setTimeout(() => this.classList.remove(&#x27;copied&#x27;), 2000)
+        "><div class="ready"><svg class="size-5"><use href="/icons/code.svg#mingcute-clipboard-line"></use></svg></div><div class="success hidden"><svg class="size-5"><use href="/icons/code.svg#mingcute-file-check-line"></use></svg></div></button></div>
+<p>模板只是起点。真正有价值的 <code>AGENTS.md</code>，一定来自项目真实问题：那些新同事会踩的坑、CI 经常失败的点、agent 容易误判的架构边界，都应该优先写进去。</p>
+<h2 id="10-总结">10. 总结<a class="anchor" href="#10-总结">#</a></h2>
+<p><code>AGENTS.md</code> 的本质不是“给 AI 多写一份 README”，而是把项目中会影响 agent 决策的工程知识结构化。</p>
+<p>以 lynx-stack 为例，好的实践包括：</p>
+<ul>
+<li>根目录写清楚 monorepo 画像、命令顺序、CI 管线和常见故障。</li>
+<li>子目录写清楚局部架构、数据流和扩展 checklist。</li>
+<li>对 agent 友好的说明应该具体、可执行、可验证。</li>
+<li>Cursor、Claude Code、Copilot 等工具可以共享 <code>AGENTS.md</code>，再通过各自专属文件补充差异。</li>
+</ul>
+<p>当项目规模变大、构建链路变复杂、agent 参与开发越来越多时，<code>AGENTS.md</code> 会逐渐从“可有可无的说明文件”变成工程协作基础设施的一部分。</p>     </div> </article> </main> <div class="bottom mt-6 items-start gap-x-10 md:flex astro-scuu7fyy">  <div class="mt-8 flex-1 text-muted-foreground md:min-w-[50ch] astro-scuu7fyy"> <script type="module" src="/_astro/Copyright.astro_astro_type_script_index_0_lang.B_VQDGfL.js"></script><div class="relative flex flex-col gap-y-2 rounded-xl border px-3 sm:px-4 py-2 sm:py-3 astro-dctqna4t"> <svg aria-hidden="true" class="absolute end-4 top-4 size-20 opacity-10 astro-dctqna4t astro-sa4wfxel" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><g fill="none"><path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2m0 2a8 8 0 1 0 0 16a8 8 0 0 0 0-16m0 3a5 5 0 0 1 3.75 1.692a1 1 0 1 1-1.5 1.324a3 3 0 1 0 0 3.968a1 1 0 1 1 1.5 1.324A5 5 0 1 1 12 7"/></g></svg>   <div class="flex flex-col astro-dctqna4t"> <div class="font-medium text-foreground astro-dctqna4t">AGENTS.md 用法：Cursor 与 Claude Code 最佳实践</div> <div class="text-sm line-clamp-1 astro-dctqna4t">https://luopengcheng89.github.io/blog/agents-md-cursor-claude-code-practices</div> </div>  <div class="flex flex-row flex-wrap justify-start gap-x-5 gap-y-1 sm:gap-x-8 astro-dctqna4t"> <div class="flex gap-x-2 sm:flex-col astro-dctqna4t"> <span class="astro-dctqna4t">Author</span> <span class="text-sm text-foreground max-sm:place-self-center astro-dctqna4t">JohnieXu</span> </div> <div class="flex gap-x-2 sm:min-w-16 sm:flex-col astro-dctqna4t"> <span class="astro-dctqna4t">Published at</span> <span class="text-sm text-foreground max-sm:place-self-center astro-dctqna4t"> April 29, 2026 </span> </div> <div class="flex gap-x-2 sm:flex-col astro-dctqna4t"> <span class="astro-dctqna4t">Copyright</span> <a class="text-sm text-foreground max-sm:place-self-center astro-dctqna4t" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">
+CC BY-NC-SA 4.0
+</a> </div> </div>  <div class="relative astro-dctqna4t"> <div class="flex flex-row gap-3 astro-dctqna4t"> <button id="copy-link" aria-label="Copy link" class="group rounded-full bg-muted p-1 text-muted-foreground transition-colors hover:text-primary sm:p-1.5 astro-dctqna4t"> <svg aria-hidden="true" class="size-5 astro-dctqna4t astro-sa4wfxel" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><g fill="none"><path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M16.243 9.878a1 1 0 0 1 1.32-.083l.094.083L19.778 12a5.5 5.5 0 0 1-7.596 7.952L12 19.778l-2.121-2.121a1 1 0 0 1 1.32-1.498l.094.083l2.121 2.122a3.5 3.5 0 0 0 5.091-4.8l-.141-.15l-2.121-2.121a1 1 0 0 1 0-1.415M9.17 9.171a1 1 0 0 1 1.32-.083l.095.083l4.242 4.243a1 1 0 0 1-1.32 1.497l-.094-.083l-4.243-4.242a1 1 0 0 1 0-1.415m-4.95-4.95a5.5 5.5 0 0 1 7.597-.173l.182.174l2.121 2.12A1 1 0 0 1 12.8 7.84l-.094-.083l-2.121-2.121a3.5 3.5 0 0 0-5.091 4.8l.141.15l2.121 2.12a1 1 0 0 1-1.32 1.498l-.094-.083L4.222 12a5.5 5.5 0 0 1 0-7.778Z"/></g></svg>  </button> <button id="get-qrcode" aria-label="Get QR code" class="group rounded-full bg-muted p-1 text-muted-foreground transition-colors hover:text-primary sm:p-1.5 astro-dctqna4t"> <svg aria-hidden="true" class="size-5 astro-dctqna4t astro-sa4wfxel" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><g fill="none"><path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M11 3a2 2 0 0 1 1.995 1.85L13 5v6a2 2 0 0 1-1.85 1.995L11 13H5a2 2 0 0 1-1.995-1.85L3 11V5a2 2 0 0 1 1.85-1.995L5 3zm0 2H5v6h6zM8.5 7a.5.5 0 0 1 .492.41L9 7.5v1a.5.5 0 0 1-.41.492L8.5 9h-1a.5.5 0 0 1-.492-.41L7 8.5v-1a.5.5 0 0 1 .41-.492L7.5 7zM21 5a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2zm-4 0h2v2h-2zM7 15a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2zm0 2H5v2h2zm14 0a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2zm-4 0h2v2h-2zm-2-5a1 1 0 0 1 1-1h4a1 1 0 1 1 0 2h-4a1 1 0 0 1-1-1m-2 4a1 1 0 1 0-2 0v4a1 1 0 1 0 2 0z"/></g></svg>  </button> <a href="http://service.weibo.com/share/share.php?url=https://luopengcheng89.github.io/blog/agents-md-cursor-claude-code-practices&title=AGENTS.md 用法：Cursor 与 Claude Code 最佳实践&pic=/_astro/thumbnail.BSS8RXC9.png" target="_blank" id="share-weibo" aria-label="Share to weibo" class="group rounded-full bg-muted p-1 text-muted-foreground transition-colors hover:text-primary sm:p-1.5 astro-dctqna4t"> <svg aria-hidden="true" class="size-5 astro-dctqna4t astro-sa4wfxel" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><g fill="none"><path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M13.12 5.815c.55.537.826 1.24.863 1.992c1.675-.502 3.045-.362 3.937.5c.848.82.937 1.967.617 2.964C19.9 11.961 21 13.058 21 14.715c0 1.93-1.256 3.526-2.962 4.586C16.318 20.371 14.004 21 11.5 21s-4.818-.63-6.538-1.699C3.256 18.241 2 16.646 2 14.715c0-1.762.842-3.589 2.05-5.156a14.6 14.6 0 0 1 4.723-3.954c1.635-.847 3.286-.828 4.347.21m-1.399 1.43c-.213-.21-.829-.485-2.028.136a12.6 12.6 0 0 0-4.06 3.4C4.576 12.154 4 13.558 4 14.715c0 .988.647 2.035 2.018 2.888C7.374 18.446 9.309 19 11.5 19c2.19 0 4.127-.554 5.482-1.397c1.371-.853 2.018-1.9 2.018-2.888c0-.711-.56-1.439-2.16-1.991a1 1 0 0 1-.473-1.546c.495-.66.355-1.248.163-1.433l-.048-.04l-.067-.042c-.337-.186-1.274-.368-3.335.661a1 1 0 0 1-1.347-1.33c.444-.92.225-1.517-.012-1.75ZM17 3c1.576 0 3.128.643 4.243 1.757A6.05 6.05 0 0 1 23 9a1 1 0 1 1-2 0c0-1.05-.429-2.086-1.172-2.828A4.04 4.04 0 0 0 17 5a1 1 0 1 1 0-2"/></g></svg>  </a><a href="https://x.com/intent/tweet?text='AGENTS.md 用法：Cursor 与 Claude Code 最佳实践'&url='https://luopengcheng89.github.io/blog/agents-md-cursor-claude-code-practices'&via='JohnieXu'" target="_blank" id="share-x" aria-label="Share to x" class="group rounded-full bg-muted p-1 text-muted-foreground transition-colors hover:text-primary sm:p-1.5 astro-dctqna4t"> <svg aria-hidden="true" class="size-5 astro-dctqna4t astro-sa4wfxel" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><g fill="none" fill-rule="evenodd"><path d="m12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036q-.016-.004-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M19.753 4.659a1 1 0 0 0-1.506-1.317l-5.11 5.84L8.8 3.4A1 1 0 0 0 8 3H4a1 1 0 0 0-.8 1.6l6.437 8.582l-5.39 6.16a1 1 0 0 0 1.506 1.317l5.11-5.841L15.2 20.6a1 1 0 0 0 .8.4h4a1 1 0 0 0 .8-1.6l-6.437-8.582l5.39-6.16ZM16.5 19L6 5h1.5L18 19z"/></g></svg>  </a><a href="https://bsky.app/intent/compose?text=AGENTS.md 用法：Cursor 与 Claude Code 最佳实践%0Ahttps://luopengcheng89.github.io/blog/agents-md-cursor-claude-code-practices" target="_blank" id="share-bluesky" aria-label="Share to bluesky" class="group rounded-full bg-muted p-1 text-muted-foreground transition-colors hover:text-primary sm:p-1.5 astro-dctqna4t"> <svg aria-hidden="true" class="size-5 astro-dctqna4t astro-sa4wfxel" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><g fill="none" fill-rule="evenodd"><path d="m12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036q-.016-.004-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M4.747 5.105a.94.94 0 0 0-.41.892l.314 3.287A3 3 0 0 0 7.637 12H9a1 1 0 0 1 .371 1.928l-2.34.937c-.885.354-1.122 1.32-.664 1.932c.288.384.576.731.84.996c.233.233.532.485.865.74c.619.475 1.625.214 1.94-.734l1.04-3.115a1 1 0 0 1 1.897 0l1.038 3.115c.316.948 1.322 1.21 1.941.735a9 9 0 0 0 .865-.741c.265-.265.553-.612.84-.996c.458-.612.222-1.578-.664-1.932l-2.34-.937A1 1 0 0 1 15 12h1.363a3 3 0 0 0 2.986-2.716l.314-3.287a.94.94 0 0 0-.41-.892a.75.75 0 0 0-.858-.001c-2.645 1.708-4.05 3.442-5.5 6.343a1 1 0 0 1-1.79 0c-1.45-2.901-2.855-4.635-5.5-6.343a.75.75 0 0 0-.858.001m-2.4 1.082C2.13 3.913 4.567 2.053 6.69 3.424C9.13 5 10.662 6.639 12 8.9c1.338-2.261 2.87-3.9 5.31-5.476c2.123-1.371 4.56.49 4.344 2.763l-.314 3.287a5 5 0 0 1-2.783 4.02c1.329 1.039 1.818 2.978.677 4.502c-.317.423-.669.853-1.027 1.211c-.317.317-.69.628-1.062.914c-1.88 1.441-4.375.35-5.055-1.69l-.09-.269l-.09.27c-.68 2.04-3.175 3.13-5.055 1.689a11 11 0 0 1-1.062-.914a11.5 11.5 0 0 1-1.027-1.211c-1.141-1.524-.651-3.463.678-4.502a5 5 0 0 1-2.784-4.02z"/></g></svg>  </a> </div> <div id="qrcode-container" class="absolute z-10 -mt-2 box-content max-h-0 max-w-44 overflow-hidden rounded-xl border bg-muted p-4 opacity-0 transition-all duration-300 ease-in-out astro-dctqna4t astro-22ql3ug4"></div> <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script> <script>(function(){const content = undefined;
+
+  const renderContent = content ?? window.location.href
+  // Load qrcode
+  function loadQRcode(qrcodeContainer) {
+    if (!qrcodeContainer) throw new Error('qrcode container not found')
+    if (qrcodeContainer.innerHTML !== '') return
+    new QRCode(qrcodeContainer, renderContent)
+  }
+  const qrcodeContainer = document.getElementById('qrcode-container')
+  if (!qrcodeContainer) throw new Error('qrcode container not found')
+  loadQRcode(qrcodeContainer)
+})();</script>  </div> </div> <div class="mx-6 rounded-b-xl border border-t-0 px-3 pb-1.5 pt-1 sm:mx-8 sm:px-4 astro-dctqna4t"> <a href="/projects#sponsorship" class="flex items-center justify-between text-muted-foreground no-underline astro-dctqna4t" target="_blank"> <span class="astro-dctqna4t">Buy me a cup of coffee ☕.</span> <svg aria-hidden="true" class="box-content size-5 p-1 astro-dctqna4t astro-sa4wfxel" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><g fill="none"><path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M17 2a3 3 0 0 1 3 3v12a1 1 0 0 1 .351 1.936l-8 3a1 1 0 0 1-.702 0l-8-3A1 1 0 0 1 4 17V5a3 3 0 0 1 3-3zm0 2H7a1 1 0 0 0-.993.883L6 5v12.682l6 2.25l6-2.25V5a1 1 0 0 0-.883-.993zm-5 1a1 1 0 0 1 .993.883L13 6v1h2a1 1 0 0 1 .117 1.993L15 9h-5a.5.5 0 0 0-.09.992L10 10h4a2.5 2.5 0 0 1 .164 4.995L14 15h-1v1a1 1 0 0 1-1.993.117L11 16v-1H9a1 1 0 0 1-.117-1.993L9 13h5a.5.5 0 0 0 .09-.992L14 12h-4a2.5 2.5 0 0 1-.164-4.995L10 7h1V6a1 1 0 0 1 1-1"/></g></svg>  </a> </div>   <div class="flex max-sm:flex-col sm:justify-between gap-2 mt-3 sm:mt-6"> <span class="min-w-0">  </span> <span class="min-w-0"> <a href="/blog/vue3-watch-effect-principles" class="group inline-flex items-center gap-x-2 rounded-xl px-4 py-2 text-right no-underline transition-colors duration-300 hover:bg-muted max-sm:float-end max-sm:max-w-[80%] sm:flex"> <p class="truncate font-medium transition-colors">Vue3 watchEffect 用法与实现原理</p> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 stroke-muted-foreground transition-colors group-hover:stroke-primary"> <line x1="5" y1="12" x2="19" y2="12" class="translate-x-4 scale-x-0 transition-all duration-300 ease-in-out group-hover:translate-x-1 group-hover:scale-x-100"></line> <polyline points="12 5 19 12 12 19" class="translate-x-0 transition-all duration-300 ease-in-out group-hover:translate-x-1"></polyline> </svg> </a> </span> </div>  </div> <div class="min-w-48 basis-60 astro-scuu7fyy">  </div> </div> <div class="z-10 md:z-50 group fixed bottom-8 end-4 transition-all flex flex-col gap-y-4 sm:end-8 astro-2wrsherf" id="action-buttons"> <button aria-label="Toggle sidebar" class="size-10 flex items-center justify-center rounded-full border-2 border-transparent bg-muted text-muted-foreground duration-300 hover:border-border/75 md:hidden sm:size-12 astro-scuu7fyy" id="sidebar-btn"> <svg aria-hidden="true" class="astro-scuu7fyy astro-sa4wfxel" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><g fill="none"><path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M4.5 17.5a1.5 1.5 0 1 1 0 3a1.5 1.5 0 0 1 0-3M20 18a1 1 0 1 1 0 2H9a1 1 0 1 1 0-2zM4.5 10.5a1.5 1.5 0 1 1 0 3a1.5 1.5 0 0 1 0-3M20 11a1 1 0 0 1 .117 1.993L20 13H9a1 1 0 0 1-.117-1.993L9 11zM4.5 3.5a1.5 1.5 0 1 1 0 3a1.5 1.5 0 0 1 0-3M20 4a1 1 0 0 1 .117 1.993L20 6H9a1 1 0 0 1-.117-1.993L9 4z"/></g></svg>  </button> <scroll-button class="astro-2wrsherf"> <button aria-label="Back to Top" class="relative size-10 flex items-center justify-center rounded-full border-2 border-transparent bg-muted text-muted-foreground duration-300 hover:border-border/75 sm:size-12 opacity-0 astro-2wrsherf" id="to-top-btn"> <div class="top-text absolute bottom-0 end-0 start-0 top-0 flex items-center justify-center group-[.ended]:opacity-0 astro-2wrsherf"> <span class="text astro-2wrsherf">10</span> <span class="text-xs astro-2wrsherf">%</span> </div> <svg aria-hidden="true" class="top-icon group-[.ended]:opacity-100 astro-2wrsherf astro-sa4wfxel" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><g fill="none" fill-rule="evenodd"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M11.293 8.293a1 1 0 0 1 1.414 0l5.657 5.657a1 1 0 0 1-1.414 1.414L12 10.414l-4.95 4.95a1 1 0 0 1-1.414-1.414z"/></g></svg>  </button> </scroll-button> </div> <script>(function(){const headerName = "content-header";
+const contentName = "content";
+const needPercent = true;
+
+  class ScrollBtn extends HTMLElement {
+    actionBtns
+    scrollBtn
+    scrollPercentEl
+    targetHeader
+    articleEl
+    scrollHeight = 0
+    articleTop = 0
+    clientHeight = 0
+    ticking = false
+    needPercent = true
+
+    calculateScrollPercent() {
+      const scrollTop = Math.max(0, window.scrollY || document.documentElement.scrollTop)
+      // Before article
+      if (scrollTop < this.articleTop) return 0
+      const maxScrollable = this.scrollHeight - this.clientHeight
+      // After article
+      if (maxScrollable <= 0) return 100
+      const progress = Math.min(scrollTop - this.articleTop, maxScrollable)
+      return Math.round((progress / maxScrollable) * 100)
+    }
+
+    updateScrollPercent() {
+      const percent = this.calculateScrollPercent()
+      this.scrollPercentEl.textContent = percent.toString()
+      this.actionBtns.classList.toggle('ended', percent >= 100)
+      this.ticking = false
+    }
+
+    connectedCallback() {
+      this.needPercent = needPercent
+      this.actionBtns = document.getElementById('action-buttons')
+      this.scrollBtn = this.querySelector('button#to-top-btn')
+      this.scrollPercentEl = this.scrollBtn.querySelector('.top-text .text')
+      this.targetHeader = document.getElementById(headerName)
+      this.articleEl = document.getElementById(contentName)
+
+      if (!this.articleEl) {
+        console.error(`Element with ID ${contentName} not found.`)
+        needPercent = false
+      }
+      // Scroll to top action
+      this.scrollBtn.addEventListener('click', this)
+      // Observe header visibility
+      if (this.targetHeader) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            this.actionBtns.classList.toggle('show', !entry.isIntersecting)
+          })
+        })
+        observer.observe(this.targetHeader)
+      } else {
+        console.error(`Element with ID ${headerName} not found.`)
+      }
+      // Scroll percent update
+      if (this.needPercent) {
+        this.scrollHeight = this.articleEl.scrollHeight
+        this.articleTop = this.articleEl.offsetTop
+        this.clientHeight = document.documentElement.clientHeight
+
+        document.addEventListener('scroll', () => {
+          if (!this.ticking) {
+            requestAnimationFrame(() => this.updateScrollPercent())
+            this.ticking = true
+          }
+        })
+      } else {
+        this.actionBtns.classList.add('ended')
+      }
+    }
+
+    handleEvent(event) {
+      if (event.type === 'click') {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
+    }
+  }
+  customElements.define('scroll-button', ScrollBtn)
+})();</script>   <footer class="mx-auto mb-5 mt-16 w-full astro-nugfd6x2"> <div class="border-t pt-5 astro-nugfd6x2"> <div class="flex items-center gap-y-3 max-sm:flex-col sm:justify-between sm:gap-y-0 astro-nugfd6x2"> <div class="flex items-center gap-x-4 gap-y-2 text-muted-foreground max-sm:flex-col astro-nugfd6x2">   <div class="astro-nugfd6x2"> © 2026 JohnieXu 
+&
+<span class="astro-nugfd6x2"> <span class="astro-nugfd6x2"> <a href="/terms/list" target="_blank" class=" astro-nugfd6x2"> Site Policy </a> </span> </span>  </div>  </div>  <div class="flex items-center gap-x-4 astro-nugfd6x2"> <a href="https://github.com/JohnieXu" rel="me" class="sl-flex astro-nugfd6x2"> <span class="sr-only astro-nugfd6x2">GitHub</span> <svg aria-hidden="true" class="astro-nugfd6x2 astro-sa4wfxel" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><g fill="none"><path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M6.315 6.176c-.25-.638-.24-1.367-.129-2.034a6.8 6.8 0 0 1 2.12 1.07c.28.214.647.283.989.18A9.3 9.3 0 0 1 12 5c.961 0 1.874.14 2.703.391c.342.104.709.034.988-.18a6.8 6.8 0 0 1 2.119-1.07c.111.667.12 1.396-.128 2.033c-.15.384-.075.826.208 1.14C18.614 8.117 19 9.04 19 10c0 2.114-1.97 4.187-5.134 4.818c-.792.158-1.101 1.155-.495 1.726c.389.366.629.882.629 1.456v3a1 1 0 0 0 2 0v-3c0-.57-.12-1.112-.334-1.603C18.683 15.35 21 12.993 21 10c0-1.347-.484-2.585-1.287-3.622c.21-.82.191-1.646.111-2.28c-.071-.568-.17-1.312-.57-1.756c-.595-.659-1.58-.271-2.28-.032a9 9 0 0 0-2.125 1.045A11.4 11.4 0 0 0 12 3c-.994 0-1.953.125-2.851.356a9 9 0 0 0-2.125-1.045c-.7-.24-1.686-.628-2.281.031c-.408.452-.493 1.137-.566 1.719l-.005.038c-.08.635-.098 1.462.112 2.283C3.484 7.418 3 8.654 3 10c0 2.992 2.317 5.35 5.334 6.397A4 4 0 0 0 8 17.98l-.168.034c-.717.099-1.176.01-1.488-.122c-.76-.322-1.152-1.133-1.63-1.753c-.298-.385-.732-.866-1.398-1.088a1 1 0 0 0-.632 1.898c.558.186.944 1.142 1.298 1.566c.373.448.869.916 1.58 1.218c.682.29 1.483.393 2.438.276V21a1 1 0 0 0 2 0v-3c0-.574.24-1.09.629-1.456c.607-.572.297-1.568-.495-1.726C6.969 14.187 5 12.114 5 10c0-.958.385-1.881 1.108-2.684c.283-.314.357-.756.207-1.14"/></g></svg>  </a> </div> </div> </div> </footer>  </div>   </body> </html> <script type="module">const d=document.getElementById("sidebar-btn"),e=document.getElementById("sidebar"),s=document.getElementById("sidebar-shade");s&&s.addEventListener("click",()=>{t()});function t(){e&&e.classList.contains("show")?(e.classList.remove("show"),s.style.display="none"):e&&(e.classList.add("show"),s.style.display="block")}d?.addEventListener("click",()=>{t()});</script>  <script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/pure/medium-zoom.min.umd.js"></script> <script>(function(){const selector = ".prose .zoomable";
+const background = "hsl(var(--background) / 0.8)";
+
+  mediumZoom(selector, { background })
+})();</script> 
