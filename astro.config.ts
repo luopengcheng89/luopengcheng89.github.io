@@ -26,7 +26,7 @@ import config from './src/site.config.ts'
 // https://astro.build/config
 export default defineConfig({
   // Top-Level Options
-  site: 'https://johniexu.github.io',
+  site: 'https://luopengcheng89.github.io',
   // base: '/xx-blog',
   trailingSlash: 'never',
 
@@ -45,7 +45,12 @@ export default defineConfig({
   image: {
     service: {
       entrypoint: 'astro/assets/services/sharp'
-    }
+    },
+    remotePatterns: [
+      { protocol: 'https', hostname: 'ghchart.rshah.org' },
+      { protocol: 'https', hostname: 'raw.githubusercontent.com' },
+      { protocol: 'https', hostname: 'github.com' }
+    ]
   },
 
   integrations: [

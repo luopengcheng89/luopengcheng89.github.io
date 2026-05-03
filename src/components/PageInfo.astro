@@ -1,0 +1,15 @@
+---
+interface Props {
+  path: string
+  hideComment?: boolean
+  class?: string
+}
+const { path, hideComment = false, ...props } = Astro.props
+---
+
+<!-- PageInfo component - simplified version -->
+<div {...props}>
+  <a href={path} class="text-sm italic text-gray-500 hover:text-gray-700">
+    View on GitHub
+  </a>
+</div>

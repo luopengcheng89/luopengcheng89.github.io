@@ -1,0 +1,10 @@
+---
+interface Props {
+  slot?: string
+}
+const { slot } = Astro.props
+---
+<!-- Comment component - simplified placeholder -->
+<div slot={slot} class="mt-8 pt-8 border-t border-gray-200">
+  <p class="text-sm text-gray-500 italic">Comments are disabled.</p>
+</div>
