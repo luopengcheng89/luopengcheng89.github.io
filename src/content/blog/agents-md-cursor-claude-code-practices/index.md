@@ -308,7 +308,7 @@ CLAUDE.md                         # Claude Code 补充
 | 不要乱改代码 | 不要手动编辑 `dist/`、`.astro/`、`node_modules/` |
 | 保持风格一致 | frontmatter 字段遵循 `src/content.config.ts` |
 
-## 8. 给 johniexu.github.io 的落地建议
+## 8. 给 stevenluo.github.io 的落地建议
 
 当前这个博客项目是 Astro 5 + astro-pure，内容集中在 `src/content/blog` 和 `src/content/docs`。相比 lynx-stack，它不是大型 monorepo，但仍然适合加两类 `AGENTS.md`：
 

@@ -1,4 +1,4 @@
-# johniexu.github.io
+# stevenluo.github.io
 
 This repository is a personal blog built with Astro 5 and the `astro-pure` theme. It deploys from the `next` branch through GitHub Actions.
 

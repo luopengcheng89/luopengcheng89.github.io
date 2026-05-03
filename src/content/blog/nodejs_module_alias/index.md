@@ -75,7 +75,7 @@ TS 项目 `tsconfig.json` 里面至少需要配置 `paths` 和 `outDir`，同样
 `paths`: `tsc-alias` 据此解析别名配置
 `outDir`：`tsc-alias`据此查找需要转换的代码，在 TS 项目对应编译输出的代码路径
 
-完整代码 demo 在[这里](https://github.com/JohnieXu/demo/tree/next/tsconfig-paths)可以找到，一个真实项目 [JohnieXu/public_actions](https://github.com/JohnieXu/public_actions)。
+完整代码 demo 在[这里](https://github.com/StevenLuo/demo/tree/next/tsconfig-paths)可以找到，一个真实项目 [StevenLuo/public_actions](https://github.com/StevenLuo/public_actions)。
 
 ## 其他方案分析
 

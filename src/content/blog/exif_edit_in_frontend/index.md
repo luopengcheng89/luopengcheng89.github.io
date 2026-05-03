@@ -18,7 +18,7 @@ heroImage:
 
 在查询了大量资料之后得知，**这些参数都来自于 Exif 数据**，于是对 Exif 的技术标准、读写 Exif 的 JS 框架做了一些研究，这篇文章就是据此研究总结而来。
 
-最后，笔者还写了一个 Exif 数据编辑的 Vue 组件——[exif-edit](https://github.com/JohnieXu/exif-edit)。
+最后，笔者还写了一个 Exif 数据编辑的 Vue 组件——[exif-edit](https://github.com/StevenLuo/exif-edit)。
 ![image](./5f0f64c2ee0459e5f318caf3983c8336.png)
 
 ## 图片格式与 Exif 数据
@@ -284,7 +284,7 @@ Web Component 组件可能有兼容性问题，具体见下方 MDN 截图
 
 另外，这个应用在读取文件、解析 Exif 过程的性能优化、组件 E2E 测试方面还有欠缺，并且不支持 TIFF 格式图片的 Exif 数据读取便秘和预览功能，后续会再考虑补充完善。
 
-最后，这个项目代码是开源的，地址在这里：[https://github.com/JohnieXu/exif-edit](https://github.com/JohnieXu/exif-edit)，欢迎各位大佬参与贡献 PR。
+最后，这个项目代码是开源的，地址在这里：[https://github.com/StevenLuo/exif-edit](https://github.com/StevenLuo/exif-edit)，欢迎各位大佬参与贡献 PR。
 
 ## 参考资料
 

@@ -205,7 +205,7 @@ import (
 	"image/jpeg"
 	"syscall/js"
 
-	"github.com/johniexu/dominantcolor"
+	"github.com/stevenluo/dominantcolor"
 )
 
 // 将[]byte转换为图像
@@ -335,7 +335,7 @@ const arrayBuffer = await fileToArrayBuffer(file);
 const color = window.getDominantColor(arrayBuffer);
 ```
 
-至此，获取单张图片的主色调、色卡功能已实现，完整的代码可以在这里查看：[https://github.com/JohnieXu/demo/tree/20230819/dominantcolor_demo](https://github.com/JohnieXu/demo/tree/20230819/dominantcolor_demo)。
+至此，获取单张图片的主色调、色卡功能已实现，完整的代码可以在这里查看：[https://github.com/StevenLuo/demo/tree/20230819/dominantcolor_demo](https://github.com/StevenLuo/demo/tree/20230819/dominantcolor_demo)。
 
 ## 效果对比
 

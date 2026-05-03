@@ -9,7 +9,7 @@ heroImage:
 ---
 
 # 前言
-在[前一篇文章](https://www.yuque.com/johniexu/frontend/dhgooo)中遇到的vue路由组件缓存问题已经解决并对项目进行了适当的优化改进，但是并未开探寻究vue-router的源码，这篇就继续上次的话题，深入分析vue-router源码中对导航守卫、动态参数匹配、过渡效果和异步组件等的实现。
+在[前一篇文章](https://www.yuque.com/stevenluo/frontend/dhgooo)中遇到的vue路由组件缓存问题已经解决并对项目进行了适当的优化改进，但是并未开探寻究vue-router的源码，这篇就继续上次的话题，深入分析vue-router源码中对导航守卫、动态参数匹配、过渡效果和异步组件等的实现。
 
 > 本文分析的源码为vue-router@3.1.3，vue@2.6.11
 
