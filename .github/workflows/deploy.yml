@@ -51,6 +51,15 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Check dist size
+        run: |
+          echo "Dist directory size:"
+          du -sh dist/
+          echo "Number of files in dist:"
+          find dist/ -type f | wc -l
+          echo "Largest files in dist:"
+          find dist/ -type f -exec du -h {} + | sort -rh | head -20
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
