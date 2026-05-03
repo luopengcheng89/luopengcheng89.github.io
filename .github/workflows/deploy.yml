@@ -48,30 +48,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Clean previous build
-        run: rm -rf dist
-
       - name: Build
         run: pnpm build
 
-      - name: Check dist contents
-        run: |
-          echo "=== Dist directory size ==="
-          du -sh dist/
-          echo "=== Number of files ==="
-          find dist/ -type f | wc -l
-          echo "=== Largest files ==="
-          find dist/ -type f -exec du -h {} + | sort -rh | head -20
-          echo "=== All files in dist ==="
-          find dist/ -type f | head -100
-
-      - name: Create .nojekyll
-        run: touch dist/.nojekyll
-
-      - name: Upload artifact
+      - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: ./dist
 
   deploy:
     environment:
