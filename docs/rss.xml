@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="/scripts/pretty-feed-v3.xsl" type="text/xsl"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:h="http://www.w3.org/TR/html4/"><channel><title>JohnieXu&apos;s Blog</title><description>Stay hungry, stay foolish</description><link>https://luopengcheng89.github.io</link><item><title>Configuration</title><link>https://luopengcheng89.github.io/docs/setup/configuration</link><guid isPermaLink="true">https://luopengcheng89.github.io/docs/setup/configuration</guid><description>Configuration files</description><content:encoded>&lt;h2&gt;Theme Configuration&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="/scripts/pretty-feed-v3.xsl" type="text/xsl"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:h="http://www.w3.org/TR/html4/"><channel><title>StevenLuo&apos;s Blog</title><description>Stay hungry, stay foolish</description><link>https://luopengcheng89.github.io</link><item><title>Configuration</title><link>https://luopengcheng89.github.io/docs/setup/configuration</link><guid isPermaLink="true">https://luopengcheng89.github.io/docs/setup/configuration</guid><description>Configuration files</description><content:encoded>&lt;h2&gt;Theme Configuration&lt;/h2&gt;
 &lt;p&gt;File: &lt;code&gt;src/site.config.ts&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;pending update...&lt;/p&gt;
 &lt;h2&gt;Astro Configuration&lt;/h2&gt;
@@ -30,69 +30,7 @@
 }
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h2&gt;Typescript Configuration&lt;/h2&gt;
-&lt;p&gt;File: &lt;code&gt;tsconfig.json&lt;/code&gt;&lt;/p&gt;</content:encoded></item><item><title>Deployment</title><link>https://luopengcheng89.github.io/docs/setup/deployment</link><guid isPermaLink="true">https://luopengcheng89.github.io/docs/setup/deployment</guid><description>Deploy your site to various platforms</description><content:encoded>&lt;p&gt;import { Steps } from &apos;astro-pure/user&apos;&lt;/p&gt;
-&lt;h2&gt;Package Mode&lt;/h2&gt;
-&lt;p&gt;This theme which &gt;= v4.0.0 has integrated NPM package mode. Recommended way is remove local package file, and install the theme integration from NPM. If there&apos;s some reason you want to change the package content, you should link local package to your theme template. A &lt;code&gt;bun&lt;/code&gt; method is integrated. You should:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Add environment variable &lt;code&gt;BUN_LINK_PKG=true&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Run &lt;code&gt;bun pure check&lt;/code&gt; to link the package automatically.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;This method can also work on Deployment for other platforms like &apos;Vercel&apos;. All you need is to add the environment variable to build options on your platform control settings. The build command &lt;code&gt;astro-pure check &amp;#x26;&amp;#x26; astro check &amp;#x26;&amp;#x26; astro build&lt;/code&gt; will automatically link the package.&lt;/p&gt;
-&lt;h2&gt;Deployment Mode&lt;/h2&gt;
-&lt;p&gt;import { Aside } from &apos;astro-pure/user&apos;&lt;/p&gt;
-&lt;h3&gt;Vercel&lt;/h3&gt;
-&lt;p&gt;This theme supports Vercel by default:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Push your code to your online Git repository (GitHub, GitLab, BitBucket).&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://vercel.com/new&quot;&gt;Import your project&lt;/a&gt; into Vercel.&lt;/li&gt;
-&lt;li&gt;Vercel will automatically detect Astro and configure the right settings.&lt;/li&gt;
-&lt;li&gt;Your application is deployed! (e.g. &lt;a href=&quot;https://astro.vercel.app/&quot;&gt;astro.vercel.app&lt;/a&gt;)&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;And vercel also support static method:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-ts&quot;&gt;import vercelServerless from &apos;@astrojs/vercel/serverless&apos; // [!code --]
-import vercelStatic from &apos;@astrojs/vercel/static&apos;; // [!code ++]
-
-export default defineConfig({
-  //   ...
-  adapter: vercelServerless() // [!code --]
-  adapter: vercelStatic(), // [!code ++]
-})
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3&gt;Node server&lt;/h3&gt;
-&lt;p&gt;If you are deploying with Node.js locally, you need to install &lt;code&gt;@astrojs/node&lt;/code&gt; first:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;bun add &apos;@astrojs/node&apos;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Then follow the comments in &lt;code&gt;astro.config.ts&lt;/code&gt; and modify like:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-ts&quot;&gt;import vercelServerless from &apos;@astrojs/vercel/serverless&apos; // [!code --]
-import node from &apos;@astrojs/node&apos; // [!code ++]
-
-export default defineConfig({
-  //   ...
-  adapter: vercelServerless(), // [!code --]
-  adapter: node({ mode: &apos;standalone&apos; }), // [!code ++]
-
-  integrations: [
-    outputCopier({ // [!code --]
-      integ: [&apos;sitemap&apos;, &apos;pagefind&apos;] // [!code --]
-    }) // [!code --]
-  ]
-})
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3&gt;Bun server&lt;/h3&gt;
-&lt;p&gt;Bun also support static method.&lt;/p&gt;
-&lt;p&gt;Check &lt;a href=&quot;https://www.npmjs.com/package/@nurodev/astro-bun&quot;&gt;@nurodev/astro-bun&lt;/a&gt; for more.&lt;/p&gt;
-&lt;h3&gt;Static&lt;/h3&gt;
-&lt;p&gt;Remove all server adapter configuration in &lt;code&gt;astro.config.ts&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-ts&quot;&gt;import vercelServerless from &apos;@astrojs/vercel/serverless&apos; // [!code --]
-
-export default defineConfig({
-  //   ...
-  adapter: vercelServerless(), // [!code --]
-  output: &apos;server&apos;, // [!code --]
-})
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3&gt;GitHub Pages&lt;/h3&gt;
-&lt;p&gt;See &lt;a href=&quot;https://docs.astro.build/en/guides/deploy/github/&quot;&gt;Astro: Configure Astro for GitHub Pages&lt;/a&gt;.&lt;/p&gt;</content:encoded></item><item><title>Authoring Content</title><link>https://luopengcheng89.github.io/docs/setup/content</link><guid isPermaLink="true">https://luopengcheng89.github.io/docs/setup/content</guid><description>Making your own content</description><content:encoded>&lt;p&gt;import { Aside } from &apos;astro-pure/user&apos;&lt;/p&gt;
+&lt;p&gt;File: &lt;code&gt;tsconfig.json&lt;/code&gt;&lt;/p&gt;</content:encoded></item><item><title>Authoring Content</title><link>https://luopengcheng89.github.io/docs/setup/content</link><guid isPermaLink="true">https://luopengcheng89.github.io/docs/setup/content</guid><description>Making your own content</description><content:encoded>&lt;p&gt;import { Aside } from &apos;astro-pure/user&apos;&lt;/p&gt;
 &lt;p&gt;Astro helps you &lt;a href=&quot;https://docs.astro.build/en/guides/content/&quot;&gt;author and present your content&lt;/a&gt;. You can write a blog post directly in Astro using Markdown/MDX, or fetch your content from a headless CMS. Astro lets you build a site around your content: you can add a layout to your pages, create an index of posts, and set up an RSS feed to allow readers to subscribe.&lt;/p&gt;
 &lt;h2&gt;Writing Content&lt;/h2&gt;
 &lt;p&gt;In Astro, you can author your content in a variety of ways:&lt;/p&gt;
@@ -206,7 +144,69 @@ heroImage: { src: &apos;./thumbnail.jpg&apos; } # will used to social-image
 This is the first section of the privacy policy.
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h3&gt;HTML Pages&lt;/h3&gt;
-&lt;p&gt;Files with the &lt;code&gt;.html&lt;/code&gt; file extension can be placed in the &lt;code&gt;src/pages/&lt;/code&gt; directory and used directly as pages on your site. Note that some key Astro features are not supported in &lt;a href=&quot;https://docs.astro.build/en/basics/astro-components/#html-components&quot;&gt;HTML Components&lt;/a&gt;.&lt;/p&gt;</content:encoded></item><item><title>Getting Started</title><link>https://luopengcheng89.github.io/docs/setup/getting-started</link><guid isPermaLink="true">https://luopengcheng89.github.io/docs/setup/getting-started</guid><description>Get started with the Astro Theme Pure</description><content:encoded>&lt;p&gt;import { Steps, Aside, Tabs, TabItem } from &apos;astro-pure/user&apos;&lt;/p&gt;
+&lt;p&gt;Files with the &lt;code&gt;.html&lt;/code&gt; file extension can be placed in the &lt;code&gt;src/pages/&lt;/code&gt; directory and used directly as pages on your site. Note that some key Astro features are not supported in &lt;a href=&quot;https://docs.astro.build/en/basics/astro-components/#html-components&quot;&gt;HTML Components&lt;/a&gt;.&lt;/p&gt;</content:encoded></item><item><title>Deployment</title><link>https://luopengcheng89.github.io/docs/setup/deployment</link><guid isPermaLink="true">https://luopengcheng89.github.io/docs/setup/deployment</guid><description>Deploy your site to various platforms</description><content:encoded>&lt;p&gt;import { Steps } from &apos;astro-pure/user&apos;&lt;/p&gt;
+&lt;h2&gt;Package Mode&lt;/h2&gt;
+&lt;p&gt;This theme which &gt;= v4.0.0 has integrated NPM package mode. Recommended way is remove local package file, and install the theme integration from NPM. If there&apos;s some reason you want to change the package content, you should link local package to your theme template. A &lt;code&gt;bun&lt;/code&gt; method is integrated. You should:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Add environment variable &lt;code&gt;BUN_LINK_PKG=true&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Run &lt;code&gt;bun pure check&lt;/code&gt; to link the package automatically.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This method can also work on Deployment for other platforms like &apos;Vercel&apos;. All you need is to add the environment variable to build options on your platform control settings. The build command &lt;code&gt;astro-pure check &amp;#x26;&amp;#x26; astro check &amp;#x26;&amp;#x26; astro build&lt;/code&gt; will automatically link the package.&lt;/p&gt;
+&lt;h2&gt;Deployment Mode&lt;/h2&gt;
+&lt;p&gt;import { Aside } from &apos;astro-pure/user&apos;&lt;/p&gt;
+&lt;h3&gt;Vercel&lt;/h3&gt;
+&lt;p&gt;This theme supports Vercel by default:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Push your code to your online Git repository (GitHub, GitLab, BitBucket).&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://vercel.com/new&quot;&gt;Import your project&lt;/a&gt; into Vercel.&lt;/li&gt;
+&lt;li&gt;Vercel will automatically detect Astro and configure the right settings.&lt;/li&gt;
+&lt;li&gt;Your application is deployed! (e.g. &lt;a href=&quot;https://astro.vercel.app/&quot;&gt;astro.vercel.app&lt;/a&gt;)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;And vercel also support static method:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-ts&quot;&gt;import vercelServerless from &apos;@astrojs/vercel/serverless&apos; // [!code --]
+import vercelStatic from &apos;@astrojs/vercel/static&apos;; // [!code ++]
+
+export default defineConfig({
+  //   ...
+  adapter: vercelServerless() // [!code --]
+  adapter: vercelStatic(), // [!code ++]
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;Node server&lt;/h3&gt;
+&lt;p&gt;If you are deploying with Node.js locally, you need to install &lt;code&gt;@astrojs/node&lt;/code&gt; first:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;bun add &apos;@astrojs/node&apos;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then follow the comments in &lt;code&gt;astro.config.ts&lt;/code&gt; and modify like:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-ts&quot;&gt;import vercelServerless from &apos;@astrojs/vercel/serverless&apos; // [!code --]
+import node from &apos;@astrojs/node&apos; // [!code ++]
+
+export default defineConfig({
+  //   ...
+  adapter: vercelServerless(), // [!code --]
+  adapter: node({ mode: &apos;standalone&apos; }), // [!code ++]
+
+  integrations: [
+    outputCopier({ // [!code --]
+      integ: [&apos;sitemap&apos;, &apos;pagefind&apos;] // [!code --]
+    }) // [!code --]
+  ]
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;Bun server&lt;/h3&gt;
+&lt;p&gt;Bun also support static method.&lt;/p&gt;
+&lt;p&gt;Check &lt;a href=&quot;https://www.npmjs.com/package/@nurodev/astro-bun&quot;&gt;@nurodev/astro-bun&lt;/a&gt; for more.&lt;/p&gt;
+&lt;h3&gt;Static&lt;/h3&gt;
+&lt;p&gt;Remove all server adapter configuration in &lt;code&gt;astro.config.ts&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-ts&quot;&gt;import vercelServerless from &apos;@astrojs/vercel/serverless&apos; // [!code --]
+
+export default defineConfig({
+  //   ...
+  adapter: vercelServerless(), // [!code --]
+  output: &apos;server&apos;, // [!code --]
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;GitHub Pages&lt;/h3&gt;
+&lt;p&gt;See &lt;a href=&quot;https://docs.astro.build/en/guides/deploy/github/&quot;&gt;Astro: Configure Astro for GitHub Pages&lt;/a&gt;.&lt;/p&gt;</content:encoded></item><item><title>Getting Started</title><link>https://luopengcheng89.github.io/docs/setup/getting-started</link><guid isPermaLink="true">https://luopengcheng89.github.io/docs/setup/getting-started</guid><description>Get started with the Astro Theme Pure</description><content:encoded>&lt;p&gt;import { Steps, Aside, Tabs, TabItem } from &apos;astro-pure/user&apos;&lt;/p&gt;
 &lt;h2&gt;Installation&lt;/h2&gt;
 &lt;p&gt;Two way to install. &quot;Template&quot; way is lightweight and simple, but hard to update; while &quot;Fork&quot; way is easy to update but needs some skills for git.&lt;/p&gt;
 &lt;h3&gt;Install Using Template&lt;/h3&gt;
