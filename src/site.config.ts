@@ -75,11 +75,11 @@ export const theme: ThemeUserConfig = {
   },
 
   content: {
-    externalLinksContent: ' ↗',
     /** Blog page size for pagination (optional) */
     blogPageSize: 8,
-    externalLinkArrow: true, // show external link arrow
-    externalLinks: {}, // object of external link domains, e.g. { 'example.com': true }
+    externalLinks: {
+      content: ' ↗'
+    },
     // Currently support weibo, x, bluesky
     share: ['weibo', 'x', 'bluesky']
   }
