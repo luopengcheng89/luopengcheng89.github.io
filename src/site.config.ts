@@ -69,7 +69,9 @@ export const theme: ThemeUserConfig = {
     /** Enable displaying a “Astro & Pure theme powered” link in your site’s footer. */
     credits: false,
     /** Optional details about the social media accounts for this site. */
-    social: { github: 'https://github.com/JohnieXu' }
+    social: [
+      { icon: 'github', label: 'GitHub', href: 'https://github.com/JohnieXu' }
+    ]
   },
 
   content: {
@@ -77,6 +79,7 @@ export const theme: ThemeUserConfig = {
     /** Blog page size for pagination (optional) */
     blogPageSize: 8,
     externalLinkArrow: true, // show external link arrow
+    externalLinks: {}, // object of external link domains, e.g. { 'example.com': true }
     // Currently support weibo, x, bluesky
     share: ['weibo', 'x', 'bluesky']
   }
